@@ -58,16 +58,17 @@ jobs:
           if [[ "$VERSION" == "$LAST_VERSION" ]]; then
             NEW_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
             sed -i "s/version: $VERSION/version: $NEW_VERSION/" nomakcooper/collection/galaxy.yml
-            echo "🔄 Auto-incremented Ansible collection version to $NEW_VERSION"
+            echo "Auto-incremented Ansible collection version to $NEW_VERSION"
 
             git add nomakcooper/collection/galaxy.yml
-            git commit -m "🔄 Auto-bumped collection version to $NEW_VERSION"
+            git commit -m "Auto-bumped collection version to $NEW_VERSION"
             git push origin main
-            VERSION=$NEW_VERSION
+          else
+            NEW_VERSION=$VERSION
           fi
 
-          # Set the correct version for the next steps
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          # Reload the correct version for later steps
+          echo "VERSION=$(grep 'version:' nomakcooper/collection/galaxy.yml | awk '{print $2}')" >> $GITHUB_ENV
 
       - name: Build Ansible Collection
         run: |
@@ -79,5 +80,6 @@ jobs:
           ANSIBLE_GALAXY_API_KEY: ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
         run: |
           cd nomakcooper/collection
+          VERSION=$(grep 'version:' galaxy.yml | awk '{print $2}')
           echo "Publishing version: ${VERSION}"
           ansible-galaxy collection publish nomakcooper-collection-${VERSION}.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
