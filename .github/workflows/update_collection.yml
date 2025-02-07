@@ -3,9 +3,6 @@ name: Auto Update Ansible Collection
 on:
   schedule:
     - cron: "0 0 * * *"  # Runs daily at midnight UTC
-  push:
-    branches:
-      - main
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -44,4 +41,4 @@ jobs:
           ANSIBLE_GALAXY_API_KEY: ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
         run: |
           cd nomakcooper/collection
-          ansible-galaxy collection publish my_namespace-my_collection-1.0.0.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
+          ansible-galaxy collection publish nomakcooper-collection-1.0.0.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
