@@ -1,0 +1,44 @@
+name: Auto Update Ansible Collection
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    branches:
+      - main
+  workflow_dispatch: 
+
+jobs:
+  update_collection:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt
+          ansible --version
+
+      - name: Fetch latest Python modules
+        run: |
+          bash fetch_modules.sh
+          git add plugins/modules/*.py
+          git commit -m "Auto-update modules from GitHub" || echo "No changes to commit"
+          git push || echo "No changes to push"
+
+      - name: Build Ansible Collection
+        run: |
+          ansible-galaxy collection build
+
+      - name: Publish to Ansible Galaxy
+        env:
+          ANSIBLE_GALAXY_API_KEY: ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
+        run: |
+          ansible-galaxy collection publish my_namespace-my_collection-1.0.0.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
