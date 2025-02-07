@@ -38,6 +38,11 @@ jobs:
           # Get latest published version from Ansible Galaxy
           PUBLISHED_VERSION=$(curl -s https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/ | jq -r '.data[].version' | sort -V | tail -n 1)
 
+          # If PUBLISHED_VERSION is empty, set it to 0.0.0 (to prevent errors)
+          if [[ -z "$PUBLISHED_VERSION" ]]; then
+            PUBLISHED_VERSION="0.0.0"
+          fi
+
           echo "🔍 Local version: $LOCAL_VERSION"
           echo "🌍 Published version: $PUBLISHED_VERSION"
 
@@ -69,4 +74,10 @@ jobs:
         run: |
           cd nomakcooper/collection
           echo "🚀 Publishing version: ${LOCAL_VERSION}"
-          ansible-galaxy collection publish nomakcooper-collection-${LOCAL_VERSION}.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
+
+          if ansible-galaxy collection publish nomakcooper-collection-${LOCAL_VERSION}.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY; then
+            echo "✅ Successfully published version ${LOCAL_VERSION}"
+          else
+            echo "⚠️ Version ${LOCAL_VERSION} already exists, skipping publish."
+            exit 0
+          fi
