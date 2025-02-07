@@ -16,13 +16,13 @@ $ ansible-galaxy collection install nomakcooper.collection
 * module usage :
 ```yaml
 - name: Retrieve load average for today
-  nomakcooper.collection.sar_info:
+  nomakcooper.collection.sar_facts:
     type: "load"
 ```
 
 ### Module list :
 
-* **sar_info** ( Collect system activity report (SAR) data for system performance onitoring )
-    * extended documentation at [GiHub sar_info](https://github.com/NomakCooper/sar_info) 
+* **sar_facts** ( Collect system activity report (SAR) data for system performance monitoring )
+    * extended documentation at [GiHub sar_facts](https://github.com/NomakCooper/sar_facts) 
 * **exa_facts** ( Gathers facts Oracle Exadata Machine )
     * extended documentation at [GiHub exa_facts](https://github.com/NomakCooper/exa_facts)

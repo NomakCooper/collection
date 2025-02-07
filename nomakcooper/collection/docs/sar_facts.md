@@ -1,4 +1,4 @@
-# `sar_info` - Gather System Activity Report Information
+# `sar_facts` - Gather System Activity Report
 
 ## **Synopsis**
 Retrieves system activity report (SAR) data for performance monitoring.
@@ -12,8 +12,8 @@ Retrieves system activity report (SAR) data for performance monitoring.
 |**parameter**|**type**|**required**|**choices**|**default**|**description**|
 |:-|:-|:-|:-|:-|:-|
 |type|str|true|cpu, load, memory, swap, network, disk|ND|collection category|
-|date\_start|str|false|ND|None|collection start date format: **DD/MM/YYYY**|
-|date\_end|str|false|ND|None|collection end date format: **DD/MM/YYYY**|
+|date\_start|str|false|ND|None|collection start date format: **YYYY-MM-DD**|
+|date\_end|str|false|ND|None|collection end date format: **YYYY-MM-DD**|
 |time_start|str|false|ND|ND|collection start time format: **24H**|
 |time_end|str|false|ND|ND|collection end time format: **24H**|
 |average|bool|false|true,false|false|get only average data|
@@ -21,36 +21,36 @@ Retrieves system activity report (SAR) data for performance monitoring.
 
 ## **Example Usage**
 ```yaml
-- name: Collect disk data for all partitions from 06/02/2025 to 07/02/2025
-  nomakcooper.collection.sar_info:
+- name: Collect disk data for all partitions from 2025-02-06 to 2025-02-07
+  nomakcooper.collection.sar_facts:
     type: "disk"
-    date_start: "06/02/2025"
-    date_end: "07/02/2025"
+    date_start: "2025-02-06"
+    date_end: "2025-02-07"
     partition: true
 ```
 ```yaml
 - name: Get cpu data between 08:00:00 and 12:00:00 for all stored days
-  nomakcooper.collection.sar_info:
+  nomakcooper.collection.sar_facts:
     type: "cpu"
     time_start: "08:00:00"
     time_end: "12:00:00"
 ```
 ```yaml
-- name: Fetch memory usage data for 07/02/2025
-  nomakcooper.collection.sar_info:
+- name: Fetch memory usage data for 2025-02-07
+  nomakcooper.collection.sar_facts:
     type: "memory"
-    date_start: "07/02/2025"
+    date_start: "2025-02-07"
 ```
 ```yaml
-- name: Get only average disk data for 06/02/2025
-  nomakcooper.collection.sar_info:
+- name: Get only average disk data for 2025-02-06
+  nomakcooper.collection.sar_facts:
     type: "disk"
-    date_start: "06/02/2025"
+    date_start: "2025-02-06"
     average: true
 ```
 ```yaml
 - name: Retrieve system load average for today
-  nomakcooper.collection.sar_info:
+  nomakcooper.collection.sar_facts:
     type: "load"
 ```
 #### Filter data
@@ -86,7 +86,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "%user": "0.09",
             "AM": "AM",
             "cpu": "all",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "time": "04:10:01"
         }
     ]
@@ -96,7 +96,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
         {
             "AM": "AM",
             "blocked": "0",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "ldavg-1": "0.00",
             "ldavg-15": "0.05",
             "ldavg-5": "0.01",
@@ -112,7 +112,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "%commit": "7.24",
             "%memused": "81.82",
             "AM": "AM",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "kbactive": "614788",
             "kbbuffers": "4076",
             "kbcached": "1135156",
@@ -131,7 +131,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "%swpcad": "0.00",
             "%swpused": "0.00",
             "AM": "AM",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "kbswpcad": "0",
             "kbswpfree": "2097148",
             "kbswpused": "0",
@@ -144,7 +144,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
         {
             "AM": "AM",
             "IFACE": "enp0s3",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rxcmp/s": "0.00",
             "rxkB/s": "0.43",
             "rxmcst/s": "0.00",
@@ -157,7 +157,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
         {
             "AM": "AM",
             "IFACE": "enp0s8",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rxcmp/s": "0.00",
             "rxkB/s": "0.01",
             "rxmcst/s": "0.02",
@@ -170,7 +170,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
         {
             "AM": "AM",
             "IFACE": "lo",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rxcmp/s": "0.00",
             "rxkB/s": "0.00",
             "rxmcst/s": "0.00",
@@ -191,7 +191,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "avgqu-sz": "0.00",
             "avgrq-sz": "14.54",
             "await": "2.15",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rd_sec/s": "0.00",
             "svctm": "0.66",
             "time": "04:10:01",
@@ -205,7 +205,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "avgqu-sz": "0.00",
             "avgrq-sz": "14.26",
             "await": "2.18",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rd_sec/s": "0.00",
             "svctm": "0.61",
             "time": "04:10:01",
@@ -219,7 +219,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "avgqu-sz": "0.00",
             "avgrq-sz": "0.00",
             "await": "0.00",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rd_sec/s": "0.00",
             "svctm": "0.00",
             "time": "04:10:01",
@@ -237,7 +237,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "avgqu-sz": "0.00",
             "avgrq-sz": "14.54",
             "await": "2.15",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rd_sec/s": "0.00",
             "svctm": "0.66",
             "time": "04:10:01",
@@ -251,7 +251,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "avgqu-sz": "0.00",
             "avgrq-sz": "14.26",
             "await": "2.18",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rd_sec/s": "0.00",
             "svctm": "0.61",
             "time": "04:10:01",
@@ -265,7 +265,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
             "avgqu-sz": "0.00",
             "avgrq-sz": "0.00",
             "await": "0.00",
-            "date": "07/02/2025",
+            "date": "2025-02-07",
             "rd_sec/s": "0.00",
             "svctm": "0.00",
             "time": "04:10:01",
