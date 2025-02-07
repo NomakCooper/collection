@@ -28,8 +28,9 @@ jobs:
 
       - name: Fetch latest Python modules
         run: |
+          mkdir -p nomakcooper/collection/plugins/modules
           bash nomakcooper/collection/fetch_modules.sh
-          git add nomakcooper/collection/plugins/modules/*.py
+          git add nomakcooper/collection/plugins/modules/*.py || echo "No files to add"
           git commit -m "Auto-update modules from GitHub" || echo "No changes to commit"
           git push || echo "No changes to push"
 

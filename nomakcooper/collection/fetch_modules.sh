@@ -8,7 +8,7 @@ SAR_INFO_URL="https://raw.githubusercontent.com/NomakCooper/sar_info/main/librar
 EXA_FACTS_URL="https://raw.githubusercontent.com/NomakCooper/exa_facts/main/library/exa_facts.py"
 
 # Define the local destination
-MODULES_DIR="plugins/modules"
+MODULES_DIR="nomakcooper/collection/plugins/modules"
 
 # Ensure the directory exists
 mkdir -p "$MODULES_DIR"
