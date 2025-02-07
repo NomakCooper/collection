@@ -43,10 +43,14 @@ jobs:
       - name: Auto-increment Collection Version (if needed)
         if: env.SKIP_VERSION_BUMP == 'false'
         run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
           VERSION=$(grep 'version:' nomakcooper/collection/galaxy.yml | awk '{print $2}')
           NEW_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
           sed -i "s/version: $VERSION/version: $NEW_VERSION/" nomakcooper/collection/galaxy.yml
           echo "Updated Ansible collection version to $NEW_VERSION"
+
           git add nomakcooper/collection/galaxy.yml
           git commit -m "Auto-bumped collection version to $NEW_VERSION"
           git push origin main
