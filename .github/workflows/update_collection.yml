@@ -29,57 +29,44 @@ jobs:
           bash nomakcooper/collection/fetch_modules.sh
           git add nomakcooper/collection/plugins/modules/*.py || echo "No files to add"
 
-      - name: Check for changes
-        id: check_changes
+      - name: Get Versions
+        id: versions
         run: |
-          if git diff --cached --quiet; then
-            echo "No changes detected. Skipping version bump."
-            echo "SKIP_VERSION_BUMP=true" >> $GITHUB_ENV
-          else
-            echo "Changes detected. Proceeding with version bump."
-            echo "SKIP_VERSION_BUMP=false" >> $GITHUB_ENV
-          fi
+          # Extract version from galaxy.yml
+          LOCAL_VERSION=$(grep 'version:' nomakcooper/collection/galaxy.yml | awk '{print $2}')
 
-      - name: Ensure Version Bump Before Publishing
+          # Get latest published version from Ansible Galaxy
+          PUBLISHED_VERSION=$(curl -s https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/ | jq -r '.data[].version' | sort -V | tail -n 1)
+
+          echo "🔍 Local version: $LOCAL_VERSION"
+          echo "🌍 Published version: $PUBLISHED_VERSION"
+
+          # Store versions in GitHub Actions environment
+          echo "LOCAL_VERSION=$LOCAL_VERSION" >> $GITHUB_ENV
+          echo "PUBLISHED_VERSION=$PUBLISHED_VERSION" >> $GITHUB_ENV
+
+      - name: Check if Version is Higher
+        id: check_version
         run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "GitHub Actions"
-
-          # Extract the current version from galaxy.yml
-          VERSION=$(grep 'version:' nomakcooper/collection/galaxy.yml | awk '{print $2}')
-
-          # Get the last published version from Ansible Galaxy
-          LAST_VERSION=$(curl -s https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/ | jq -r '.data[].version' | sort -V | tail -n 1)
-
-          echo "Current local version: $VERSION"
-          echo "Last published version: $LAST_VERSION"
-
-          # If the local version matches the last published version, bump it
-          if [[ "$VERSION" == "$LAST_VERSION" ]]; then
-            NEW_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
-            sed -i "s/version: $VERSION/version: $NEW_VERSION/" nomakcooper/collection/galaxy.yml
-            echo "Auto-incremented Ansible collection version to $NEW_VERSION"
-
-            git add nomakcooper/collection/galaxy.yml
-            git commit -m "Auto-bumped collection version to $NEW_VERSION"
-            git push origin main
+          if [ "$(printf '%s\n' "$PUBLISHED_VERSION" "$LOCAL_VERSION" | sort -V | tail -n 1)" != "$LOCAL_VERSION" ]; then
+            echo "⚠️ Local version ($LOCAL_VERSION) is not higher than published version ($PUBLISHED_VERSION). Skipping build and publish."
+            echo "SKIP_PUBLISH=true" >> $GITHUB_ENV
           else
-            NEW_VERSION=$VERSION
+            echo "✅ Local version is higher. Proceeding with build and publish."
+            echo "SKIP_PUBLISH=false" >> $GITHUB_ENV
           fi
-
-          # Reload the correct version for later steps
-          echo "VERSION=$(grep 'version:' nomakcooper/collection/galaxy.yml | awk '{print $2}')" >> $GITHUB_ENV
 
       - name: Build Ansible Collection
+        if: env.SKIP_PUBLISH == 'false'
         run: |
           cd nomakcooper/collection
           ansible-galaxy collection build --force
 
       - name: Publish to Ansible Galaxy
+        if: env.SKIP_PUBLISH == 'false'
         env:
           ANSIBLE_GALAXY_API_KEY: ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
         run: |
           cd nomakcooper/collection
-          VERSION=$(grep 'version:' galaxy.yml | awk '{print $2}')
-          echo "Publishing version: ${VERSION}"
-          ansible-galaxy collection publish nomakcooper-collection-${VERSION}.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
+          echo "🚀 Publishing version: ${LOCAL_VERSION}"
+          ansible-galaxy collection publish nomakcooper-collection-${LOCAL_VERSION}.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
