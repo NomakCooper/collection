@@ -42,6 +42,8 @@ jobs:
 
       - name: Auto-increment Collection Version (if needed)
         if: env.SKIP_VERSION_BUMP == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -53,7 +55,9 @@ jobs:
 
           git add nomakcooper/collection/galaxy.yml
           git commit -m "Auto-bumped collection version to $NEW_VERSION"
-          git push origin main
+
+          # Use GitHub token for authentication
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/NomakCooper/collection.git main
 
       - name: Build Ansible Collection
         run: |
