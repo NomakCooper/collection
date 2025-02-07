@@ -40,20 +40,30 @@ jobs:
             echo "SKIP_VERSION_BUMP=false" >> $GITHUB_ENV
           fi
 
-      - name: Auto-increment Collection Version (if needed)
+      - name: Ensure Version Bump Before Publishing
         if: env.SKIP_VERSION_BUMP == 'false'
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
 
+          # Extract the current version
           VERSION=$(grep 'version:' nomakcooper/collection/galaxy.yml | awk '{print $2}')
-          NEW_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
-          sed -i "s/version: $VERSION/version: $NEW_VERSION/" nomakcooper/collection/galaxy.yml
-          echo "Updated Ansible collection version to $NEW_VERSION"
+          
+          # Get the last published version from Ansible Galaxy
+          LAST_VERSION=$(curl -s https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/ | jq -r '.data[].version' | sort -V | tail -n 1)
 
-          git add nomakcooper/collection/galaxy.yml
-          git commit -m "Auto-bumped collection version to $NEW_VERSION"
-          git push origin main
+          # If last published version is the same as local version, bump it
+          if [[ "$VERSION" == "$LAST_VERSION" ]]; then
+            NEW_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
+            sed -i "s/version: $VERSION/version: $NEW_VERSION/" nomakcooper/collection/galaxy.yml
+            echo "Auto-incremented Ansible collection version to $NEW_VERSION"
+            
+            git add nomakcooper/collection/galaxy.yml
+            git commit -m "Auto-bumped collection version to $NEW_VERSION"
+            git push origin main
+          else
+            echo "Version is already new: $VERSION"
+          fi
 
       - name: Build Ansible Collection
         run: |
