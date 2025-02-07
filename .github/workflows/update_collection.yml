@@ -36,10 +36,12 @@ jobs:
 
       - name: Build Ansible Collection
         run: |
+          cd nomakcooper/collection
           ansible-galaxy collection build
 
       - name: Publish to Ansible Galaxy
         env:
           ANSIBLE_GALAXY_API_KEY: ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
         run: |
+          cd nomakcooper/collection
           ansible-galaxy collection publish my_namespace-my_collection-1.0.0.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
