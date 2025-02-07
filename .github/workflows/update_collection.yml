@@ -34,7 +34,7 @@ jobs:
       - name: Build Ansible Collection
         run: |
           cd nomakcooper/collection
-          ansible-galaxy collection build
+          ansible-galaxy collection build --force
 
       - name: Publish to Ansible Galaxy
         env:
