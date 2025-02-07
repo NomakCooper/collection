@@ -41,7 +41,6 @@ jobs:
           fi
 
       - name: Ensure Version Bump Before Publishing
-        if: env.SKIP_VERSION_BUMP == 'false'
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -52,7 +51,10 @@ jobs:
           # Get the last published version from Ansible Galaxy
           LAST_VERSION=$(curl -s https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/ | jq -r '.data[].version' | sort -V | tail -n 1)
 
-          # If last published version is the same as local version, bump it
+          echo "Current local version: $VERSION"
+          echo "Last published version: $LAST_VERSION"
+
+          # If the local version matches the last published version, increment it
           if [[ "$VERSION" == "$LAST_VERSION" ]]; then
             NEW_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
             sed -i "s/version: $VERSION/version: $NEW_VERSION/" nomakcooper/collection/galaxy.yml
