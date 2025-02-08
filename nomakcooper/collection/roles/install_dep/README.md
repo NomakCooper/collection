@@ -14,7 +14,7 @@ Requirements
 Role Variables
 --------------
 
-- install_dep_become ( defualt: false ): The variable specifies whether the role and the installation of Python modules should be executed with become.
+- **install_dep_become** ( default: **false** ): The variable specifies whether the role and the installation of Python modules should be executed with become.
 
 Dependencies
 ------------
@@ -22,13 +22,14 @@ Dependencies
 
 Example Playbook
 ----------------
-
+```yaml
   - name: Install Dependencies as non super-user
     hosts: all
     gather_facts: no
     roles:
       - role: nomakcooper.collection.install_dep
-
+```      
+```yaml
   - name: Install Dependencies as super-user
     hosts: all
     gather_facts: no
@@ -36,6 +37,7 @@ Example Playbook
       - role: nomakcooper.collection.install_dep
         vars:
           install_dep_become: true
+```
 
 License
 -------
