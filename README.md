@@ -13,6 +13,23 @@
 ```bash
 $ ansible-galaxy collection install nomakcooper.collection
 ```
+* install dependences ( required for charts module ):
+```bash
+# Ansible Core requirements.txt
+$ pip install -r ~/.ansible/collections/ansible_collections/nomakcooper/collection/meta/requirements.txt
+```
+```bash
+# AWX/Tower requirements.txt
+$ pip install -r /var/lib/awx/venv/ansible/meta/requirements.txt
+```
+```bash
+# Ansible Core install_dependencies.yml
+$ ansible-playbook install_dependencies.yml
+```
+```bash
+# Ansible Core post_install.sh
+$ bash ~/.ansible/collections/ansible_collections/nomakcooper/collection/scripts/post_install.sh
+```
 * module usage :
 ```yaml
 - name: Retrieve load average for today
@@ -26,3 +43,5 @@ $ ansible-galaxy collection install nomakcooper.collection
     * extended documentation at [GiHub sar_facts](https://github.com/NomakCooper/sar_facts) 
 * **exa_facts** ( Gathers facts Oracle Exadata Machine )
     * extended documentation at [GiHub exa_facts](https://github.com/NomakCooper/exa_facts)
+* **charts** ( Generate charts in image format )
+    * extended documentation at [GiHub charts](https://github.com/NomakCooper/charts)

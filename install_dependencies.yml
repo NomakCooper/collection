@@ -1,0 +1,15 @@
+---
+- name: Install Required Python Packages from requirements.txt
+  hosts: localhost
+  gather_facts: no
+  become: no
+  tasks:
+    - name: Ensure pip is installed
+      ansible.builtin.pip:
+        name: pip
+        state: present
+
+    - name: Install dependencies from requirements.txt
+      ansible.builtin.pip:
+        requirements="{{ playbook_dir }}/../meta/requirements.txt"
+        state: present
