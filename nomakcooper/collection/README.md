@@ -3,6 +3,7 @@
 ![automation](https://img.shields.io/badge/ansible-automation-blue?style=flat-square&logo=ansible&logoColor=white)
 ![galaxy](https://img.shields.io/badge/ansible-galaxy-blue?style=flat-square&logo=ansible&logoColor=white)
 ![module](https://img.shields.io/badge/ansible-module-blue?style=flat-square&logo=ansible&logoColor=white)
+![roles](https://img.shields.io/badge/ansible-roles-blue?style=flat-square&logo=ansible&logoColor=white)
 
 ## Documentation for the collection.
 * This collection includes several custom modules developed by [@NomakCooper](https://github.com/NomakCooper).
@@ -12,6 +13,23 @@
 * collection install :
 ```bash
 $ ansible-galaxy collection install nomakcooper.collection
+```
+* [**Recommended**] install dependences **role** ( required for charts module ):
+```yaml
+  - name: Install Dependencies as non super-user
+    hosts: all
+    gather_facts: no
+    roles:
+      - role: nomakcooper.collection.install_dep
+```
+```yaml
+  - name: Install Dependencies as super-user
+    hosts: all
+    gather_facts: no
+    roles:
+      - role: nomakcooper.collection.install_dep
+        vars:
+          install_dep_become: true
 ```
 * install dependences ( required for charts module ):
 ```bash
