@@ -5,7 +5,7 @@
 ![module](https://img.shields.io/badge/ansible-module-blue?style=flat-square&logo=ansible&logoColor=white)
 
 ## Documentation for the collection.
-* This collection includes several custom modules developed by @NomakCooper.
+* This collection includes several custom modules developed by [@NomakCooper](https://github.com/NomakCooper).
 * The modules are dynamically added to the collection through GitHub Action.
 ### How to use this collection and module
 

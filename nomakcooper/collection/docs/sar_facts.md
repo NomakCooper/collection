@@ -58,7 +58,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     - name: Extract all await values for centos-root ( from disk type partitioned )
       set_fact:
         root_await: >-
-          {{ ansible_facts.sar_data.disk
+          {{ ansible_facts.sar_disk
             | selectattr('DEV', 'equalto', 'centos-root')
             | map(attribute='await')
             | list
@@ -68,7 +68,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     - name: Extract all rxpck/s values for enp0s3 net interface
       set_fact:
         enp0s3_rxpck: >-
-          {{ ansible_facts.sar_data.network
+          {{ ansible_facts.sar_net
             | selectattr('IFACE', 'equalto', 'enp0s3')
             | map(attribute='rxpck/s')
             | list
@@ -76,7 +76,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
 ```
 ## Return Values
 ```json
-    "ansible_facts.sar_data.cpu": [
+    "ansible_facts.sar_cpu": [
         {
             "%idle": "99.84",
             "%iowait": "0.00",
@@ -92,7 +92,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     ]
 ```
 ```json
-    "ansible_facts.sar_data.load": [
+    "ansible_facts.sar_load": [
         {
             "AM": "AM",
             "blocked": "0",
@@ -107,7 +107,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     ]
 ```
 ```json
-    "ansible_facts.sar_data.memory": [
+    "ansible_facts.sar_mem": [
         {
             "%commit": "7.24",
             "%memused": "81.82",
@@ -126,7 +126,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     ]
 ```
 ```json
-    "ansible_facts.sar_data.swap": [
+    "ansible_facts.sar_swap": [
         {
             "%swpcad": "0.00",
             "%swpused": "0.00",
@@ -140,7 +140,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     ]
 ```
 ```json
-    "ansible_facts.sar_data.network": [
+    "ansible_facts.sar_net": [
         {
             "AM": "AM",
             "IFACE": "enp0s3",
@@ -183,7 +183,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     ]
 ```
 ```json
-    "ansible_facts.sar_data.disk": [
+    "ansible_facts.sar_disk": [
         {
             "%util": "0.01",
             "AM": "AM",
@@ -229,7 +229,7 @@ Retrieves system activity report (SAR) data for performance monitoring.
     ]
 ```
 ```json
-    "ansible_facts.sar_data.disk": [
+    "ansible_facts.sar_disk": [
         {
             "%util": "0.01",
             "AM": "AM",
