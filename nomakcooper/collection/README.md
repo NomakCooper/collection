@@ -30,10 +30,10 @@ $ ansible-galaxy collection install nomakcooper.collection
     pre_tasks:
 
       - name: install dependencies
-        include_role:
-          name: nomakcooper.collection.install_dep
-        apply:
-          become: false
+        block:
+          - include_role:
+              name: nomakcooper.collection.install_dep
+        become: false
 ```
 * install dependences ( required for charts module ):
 ```bash
