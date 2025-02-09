@@ -16,20 +16,24 @@ $ ansible-galaxy collection install nomakcooper.collection
 ```
 * [**Recommended**] install dependences **role** ( required for charts module ):
 ```yaml
-  - name: Install Dependencies as non super-user
+  - name: Install Dependencies on CN
     hosts: all
     gather_facts: no
     roles:
       - role: nomakcooper.collection.install_dep
 ```
 ```yaml
-  - name: Install Dependencies as super-user
+  - name: Install Dependencies on CN
     hosts: all
     gather_facts: no
-    roles:
-      - role: nomakcooper.collection.install_dep
-        vars:
-          install_dep_become: true
+
+    pre_tasks:
+
+      - name: install dependencies
+        include_roles:
+          name: nomakcooper.collection.install_dep
+        apply:
+          become: false
 ```
 * install dependences ( required for charts module ):
 ```bash
