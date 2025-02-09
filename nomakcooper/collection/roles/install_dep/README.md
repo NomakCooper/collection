@@ -35,7 +35,7 @@ Example Playbook
     pre_tasks:
 
       - name: install dependencies
-        include_roles:
+        include_role:
           name: nomakcooper.collection.install_dep
         apply:
           become: false
