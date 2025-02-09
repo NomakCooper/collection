@@ -1,5 +1,6 @@
 ---
 - name: Get collection requirements
+  become: "{{ install_dep_become }}"
   ansible.builtin.slurp:
     src: "{{ role_path }}/../../meta/requirements.txt"
   register: prereq_file
@@ -7,15 +8,16 @@
   run_once: true
 
 - name: Extract python module dep
+  become: "{{ install_dep_become }}"
   ansible.builtin.set_fact:
     prereq_packages: "{{ prereq_file['content'] | b64decode | split('\n') | reject('equalto', '') | list }}"
   delegate_to: localhost
   run_once: true
 
 - name: Install Py module on CN
+  become: "{{ install_dep_become }}"
   ansible.builtin.pip:
     name: "{{ prereq_packages }}"
     state: present
-  become: "{{ install_dep_become }}"
   delegate_to: localhost
   run_once: true
