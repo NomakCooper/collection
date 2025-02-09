@@ -63,7 +63,11 @@ $ bash ~/.ansible/collections/ansible_collections/nomakcooper/collection/scripts
 
 * **sar_facts** ( Collect system activity report (SAR) data for system performance monitoring )
     * extended documentation at [GiHub sar_facts](https://github.com/NomakCooper/sar_facts) 
+
 * **exa_facts** ( Gathers facts Oracle Exadata Machine )
     * extended documentation at [GiHub exa_facts](https://github.com/NomakCooper/exa_facts)
+
 * **charts** ( Generate charts in image format )
     * extended documentation at [GiHub charts](https://github.com/NomakCooper/charts)
+
+
