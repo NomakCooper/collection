@@ -1,0 +1,65 @@
+name: Sync Ansible Galaxy Version to GitHub Releases
+
+# Run on a schedule (here: every hour) or manually.
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-release:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Get the latest version from Ansible Galaxy.
+      - name: Fetch Ansible Galaxy Latest Version
+        id: galaxy
+        run: |
+          echo "Querying Ansible Galaxy API for latest version..."
+          response=$(curl -s "https://galaxy.ansible.com/api/v2/collections/nomakcooper/collection/")
+          echo "$response" > galaxy_response.json
+          galaxy_version=$(jq -r '.latest_version.version' galaxy_response.json)
+          echo "Latest Galaxy version: $galaxy_version"
+          echo "version=$galaxy_version" >> $GITHUB_OUTPUT
+
+      # Step 2: Get the latest GitHub release version.
+      - name: Get Latest GitHub Release Version
+        id: gh_release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const releases = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 1,
+            });
+            if (releases.data.length > 0) {
+              return releases.data[0].tag_name;
+            }
+            return "";
+          result-encoding: string
+
+      # Optional: Output both versions for debugging.
+      - name: Debug Versions
+        run: |
+          echo "Ansible Galaxy version: ${{ steps.galaxy.outputs.version }}"
+          echo "GitHub release version: ${{ steps.gh_release.outputs.result }}"
+
+      # Step 3: If versions differ, create a new GitHub release.
+      - name: Create New GitHub Release If Needed
+        if: steps.galaxy.outputs.version != steps.gh_release.outputs.result
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const newVersion = process.env.NEW_VERSION;
+            console.log(`Creating GitHub release for version: ${newVersion}`);
+            const releaseResponse = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: newVersion,
+              name: `Release ${newVersion}`,
+              body: `Automated release: Ansible Galaxy collection updated to version ${newVersion}.`,
+              draft: false,
+              prerelease: false
+            });
+            console.log("Release created at:", releaseResponse.data.html_url);
+        env:
+          NEW_VERSION: ${{ steps.galaxy.outputs.version }}
+
