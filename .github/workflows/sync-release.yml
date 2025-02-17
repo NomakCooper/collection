@@ -56,7 +56,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: newVersion,
-              name: `Release ${newVersion}`,
+              name: `${newVersion}`,
               body: `Automated release: Ansible Galaxy collection updated to version ${newVersion}.`,
               draft: false,
               prerelease: false
