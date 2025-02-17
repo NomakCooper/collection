@@ -13,7 +13,11 @@ jobs:
         id: galaxy
         run: |
           echo "Querying Ansible Galaxy v3 API for published versions..."
-          PUBLISHED_VERSION=$(curl -s "https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/" | jq -r '.data[].version' | sort -V | tail -n 1)
+          response=$(curl -s -H "Accept: application/json" "https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/")
+          echo "$response" > galaxy_response.json
+          echo "Galaxy API response:"
+          cat galaxy_response.json
+          PUBLISHED_VERSION=$(echo "$response" | jq -r '.highest_version.version')
           echo "Latest Galaxy version: $PUBLISHED_VERSION"
           echo "version=$PUBLISHED_VERSION" >> $GITHUB_OUTPUT
 
