@@ -12,12 +12,10 @@ jobs:
       - name: Fetch Ansible Galaxy Latest Version
         id: galaxy
         run: |
-          echo "Querying Ansible Galaxy API for latest version..."
-          response=$(curl -s "https://galaxy.ansible.com/api/v2/collections/nomakcooper/collection/")
-          echo "$response" > galaxy_response.json
-          galaxy_version=$(jq -r '.latest_version.version' galaxy_response.json)
-          echo "Latest Galaxy version: $galaxy_version"
-          echo "version=$galaxy_version" >> $GITHUB_OUTPUT
+          echo "Querying Ansible Galaxy v3 API for published versions..."
+          PUBLISHED_VERSION=$(curl -s "https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/nomakcooper/collection/" | jq -r '.data[].version' | sort -V | tail -n 1)
+          echo "Latest Galaxy version: $PUBLISHED_VERSION"
+          echo "version=$PUBLISHED_VERSION" >> $GITHUB_OUTPUT
 
       # Step 2: Get the latest GitHub release version.
       - name: Get Latest GitHub Release Version
