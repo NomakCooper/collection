@@ -7,7 +7,6 @@
 
 ## Documentation for the collection.
 * This collection includes some custom modules developed by [@NomakCooper](https://github.com/NomakCooper).
-* The modules are dynamically added to the collection through GitHub Action.
 ### How to use this collection and module
 
 * collection install :

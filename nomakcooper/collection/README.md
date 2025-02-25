@@ -6,8 +6,7 @@
 ![roles](https://img.shields.io/badge/ansible-roles-blue?style=flat-square&logo=ansible&logoColor=white)
 
 ## Documentation for the collection.
-* This collection includes several custom modules developed by [@NomakCooper](https://github.com/NomakCooper).
-* The modules are dynamically added to the collection through GitHub Action.
+* This collection includes some custom modules developed by [@NomakCooper](https://github.com/NomakCooper).
 ### How to use this collection and module
 
 * collection install :
