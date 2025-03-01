@@ -6,14 +6,15 @@
   ansible.builtin.command: "which sar"
   register: sar_bin
   ignore_errors: yes
+  failed_when: false
 
 - name: Skip SAR facts test if SAR binary is not available
   meta: end_play
   when: sar_bin.rc != 0
 
-- name: Get yesterday's date dynamically
+- name: Get current date dynamically
   ansible.builtin.set_fact:
-    sar_date: "{{ lookup('pipe', 'date --date=\"yesterday\" +%Y-%m-%d') }}"
+    sar_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
 
 - name: Debug the selected SAR date
   ansible.builtin.debug:
