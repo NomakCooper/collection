@@ -36,6 +36,7 @@ options:
       - X-axis data values.
     required: false
     type: list
+    elements: str
     default: []
   xaxisname:
     description:
@@ -44,21 +45,24 @@ options:
     type: str
   yaxis:
     description:
-      - List of Y-axis data series.
+      - List of Y-axis data series (each series is a list of numeric values).
     required: false
     type: list
+    elements: list
     default: []
   yaxisname:
     description:
       - Labels for the Y-axis data series.
     required: false
     type: list
+    elements: str
     default: []
   yaxiscolor:
     description:
       - Colors for the Y-axis data series.
     required: false
     type: list
+    elements: str
     default: []
   imgwidth:
     description:
@@ -117,18 +121,21 @@ options:
       - Data values for pie or donut chart slices.
     required: false
     type: list
+    elements: float
     default: []
   slicelabel:
     description:
       - Labels for pie or donut chart slices.
     required: false
     type: list
+    elements: str
     default: []
   slicecolor:
     description:
       - Colors for pie or donut chart slices.
     required: false
     type: list
+    elements: str
     default: []
   sizehole:
     description:
@@ -310,11 +317,11 @@ def run_module():
     module_args = dict(
         titlechart=dict(type='str'),
         type=dict(type='str', required=True, choices=['line', 'bar', 'pie', 'donut']),
-        xaxis=dict(type='list', default=[]),
+        xaxis=dict(type='list', elements='str', default=[]),
         xaxisname=dict(type='str'),
-        yaxis=dict(type='list', default=[]),
-        yaxisname=dict(type='list', default=[]),
-        yaxiscolor=dict(type='list', default=[]),
+        yaxis=dict(type='list', elements='list', default=[]),
+        yaxisname=dict(type='list', elements='str', default=[]),
+        yaxiscolor=dict(type='list', elements='str', default=[]),
         imgwidth=dict(type='int', default=1920),
         imgheight=dict(type='int', default=1080),
         shape_line=dict(type='str', choices=['spline', 'linear']),
@@ -324,9 +331,9 @@ def run_module():
         fontsize=dict(type='int', default=20),
         fontcolor=dict(type='str', default='#333333'),
         titlelegend=dict(type='str'),
-        slicedata=dict(type='list', default=[]),
-        slicelabel=dict(type='list', default=[]),
-        slicecolor=dict(type='list', default=[]),
+        slicedata=dict(type='list', elements='float', default=[]),
+        slicelabel=dict(type='list', elements='str', default=[]),
+        slicecolor=dict(type='list', elements='str', default=[]),
         sizehole=dict(type='float', default=0.5),
     )
 
