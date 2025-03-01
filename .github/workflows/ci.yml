@@ -19,7 +19,6 @@ jobs:
     strategy:
       matrix:
         ansible:
-          - stable-2.16
           - stable-2.17
           - stable-2.18
           - devel
@@ -35,6 +34,7 @@ jobs:
           collection-root: nomakcooper/collection
           sanity-skip-tests: "import, runtime-metadata"
           pre-test-cmd: pip install -r meta/requirements.txt
+          docker-image: none
           pull-request-change-detection: true
 
   units:
@@ -45,7 +45,6 @@ jobs:
       fail-fast: true
       matrix:
         ansible:
-          - stable-2.16
           - stable-2.17
           - stable-2.18
           - devel
@@ -82,8 +81,6 @@ jobs:
           - '3.12'
           - '3.13'
         include:
-          - ansible: stable-2.16
-            python: '2.7'
           - ansible: stable-2.16
             python: '3.6'
           - ansible: stable-2.16

@@ -47,10 +47,6 @@ $ pip install -r /var/lib/awx/venv/ansible/meta/requirements.txt
 # Ansible Core install_dependencies.yml
 $ ansible-playbook install_dependencies.yml
 ```
-```bash
-# Ansible Core post_install.sh
-$ bash ~/.ansible/collections/ansible_collections/nomakcooper/collection/scripts/post_install.sh
-```
 * module usage :
 ```yaml
 - name: Retrieve load average for today
