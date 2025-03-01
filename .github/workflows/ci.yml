@@ -36,7 +36,6 @@ jobs:
           pull-request-change-detection: true
 
   integration:
-    if: false
     name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     runs-on: ubuntu-latest
     strategy:
@@ -110,6 +109,7 @@ jobs:
     if: always()
     needs:
       - sanity
+      - integration
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed

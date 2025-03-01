@@ -1,0 +1,36 @@
+# Copyright (c) Marco Noce <nce.marco@gmail.com>
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Generate a line chart
+  charts:
+    type: "line"
+    titlechart: "Integration Test Line Chart"
+    xaxis: ['00:00', '01:00', '02:00']
+    xaxisname: "Time"
+    yaxis: [[10, 20, 30]]
+    yaxisname: ["Metric"]
+    yaxiscolor: ["blue"]
+    shape_line: "spline"
+    imgwidth: 800
+    imgheight: 600
+    path: "/tmp/charts"
+    filename: "test_line_chart"
+    format: "png"
+  register: chart_result
+
+- name: Check that the chart module reports changed=true
+  assert:
+    that:
+      - chart_result.changed == true
+
+- name: Verify that the chart image file exists
+  stat:
+    path: "/tmp/charts/test_line_chart.png"
+  register: image_file
+
+- name: Assert that the image file exists and is non-empty
+  assert:
+    that:
+      - image_file.stat.exists
+      - image_file.stat.size > 0
