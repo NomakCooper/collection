@@ -149,7 +149,7 @@ author:
 
 EXAMPLES = r'''
 - name: Generate a line chart for CPU Usage Over Time
-  charts:
+  nomakcooper.collection.charts:
     type: "line"
     titlechart: "CPU Usage Over Time"
     xaxis: ['00:00', '02:00', '04:00', '06:00', '08:00']
@@ -167,7 +167,7 @@ EXAMPLES = r'''
   delegate_to: localhost
 
 - name: Generate a pie chart for Resource Distribution
-  charts:
+  nomakcooper.collection.charts:
     type: "pie"
     titlechart: "Resource Distribution"
     slicedata: [10, 20, 30, 40]

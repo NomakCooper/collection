@@ -54,7 +54,7 @@ author:
 EXAMPLES = r'''
 # Gather CPU performance metrics for a specific date and time range.
 - name: Gather CPU SAR facts between 08:00 and 10:00
-  sar_facts:
+  nomakcooper.collection.sar_facts:
     date_start: "2025-05-01"
     date_end: "2025-05-01"
     time_start: "08:00:00"
@@ -63,23 +63,56 @@ EXAMPLES = r'''
 
 # Gather memory usage SAR data for a single day.
 - name: Retrieve memory usage data for a day
-  sar_facts:
+  nomakcooper.collection.sar_facts:
     date_start: "2025-05-01"
     type: memory
 
 # Retrieve disk statistics with partition details.
 - name: Gather disk usage statistics with partition information
-  sar_facts:
+  nomakcooper.collection.sar_facts:
     date_start: "2025-05-01"
     type: disk
     partition: true
 
 # Retrieve average load statistics.
 - name: Gather average load statistics
-  sar_facts:
+  nomakcooper.collection.sar_facts:
     date_start: "2025-05-01"
     type: load
     average: true
+'''
+
+RETURN = r'''
+ansible_facts:
+  description: >
+    A dictionary containing the SAR data collected from system logs. The key is dynamically determined
+    based on the O(type).
+    The value is a list of dictionaries where each dictionary represents a single data point with the following keys:
+      - V(date): The date for the measurement.
+      - V(time): The time for the measurement in 24-hour format.
+      - Additional keys corresponding to the performance metrics output from the C(sar) command.
+  returned: always
+  type: dict
+  sample: {
+      "sar_cpu": [
+          {
+              "date": "2025-05-01",
+              "time": "08:00:00",
+              "AM": "AM",
+              "%user": "5.00",
+              "%system": "2.00",
+              "%idle": "93.00"
+          },
+          {
+              "date": "2025-05-01",
+              "time": "08:10:00",
+              "AM": "AM",
+              "%user": "6.00",
+              "%system": "3.00",
+              "%idle": "91.00"
+          }
+      ]
+  }
 '''
 
 from ansible.module_utils.basic import AnsibleModule
