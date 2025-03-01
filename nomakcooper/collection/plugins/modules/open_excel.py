@@ -35,13 +35,13 @@ options:
       - If omitted, defaults to appending V(_updated.xlsx) to the O(src) filename.
     required: false
     type: str
-  op:
+    op:
     description:
-      - The operation to perform on the Excel file.
-      - V(r): Read-only. Returns the content from the specified sheet or all sheets.
-      - V(w): Write. Overwrites specified cells with new values.
-      - V(a): Append. Creates one new row at the end of the sheet, writing each item in O(updates_matrix) to that row.
-      - V(i): Insert. Inserts a new row above the row specified in the first item of O(updates_matrix) and writes the updates.
+        - The operation to perform on the Excel file. Options: 
+        - V(r) - Read-only. Returns the content from the specified sheet or all sheets.
+        - V(w) - Write. Overwrites specified cells with new values.
+        - V(a) - Append. Creates one new row at the end of the sheet, writing each item in O(updates_matrix) to that row.
+        - V(i) - Insert. Inserts a new row above the row specified in the first item of O(updates_matrix) and writes the updates.
     required: true
     type: str
     choices: ['r', 'w', 'a', 'i']
@@ -71,9 +71,9 @@ options:
     description:
       - A list of dictionaries describing the cells to update.
       - Each dictionary can include:
-        - V(cell_row): The row to update (ignored in append mode).
-        - V(cell_col): The column to update.
-        - V(cell_value): The value to write.
+        - V(cell_row) - The row to update (ignored in append mode).
+        - V(cell_col) - The column to update.
+        - V(cell_value) - The value to write.
     required: false
     type: list
     default: []
@@ -81,11 +81,11 @@ options:
     description:
       - A dictionary specifying optional style attributes for updated cells.
       - Possible keys include:
-        - V(fontColor): Hex RGB code for the font color.
-        - V(bgColor): Hex RGB code for the cell background color.
-        - V(bold): Boolean to set bold font.
-        - V(italic): Boolean to set italic font.
-        - V(underline): Boolean to set underline; if true, uses single underline.
+        - V(fontColor) - Hex RGB code for the font color.
+        - V(bgColor) - Hex RGB code for the cell background color.
+        - V(bold) - Boolean to set bold font.
+        - V(italic) - Boolean to set italic font.
+        - V(underline) - Boolean to set underline; if true, uses single underline.
     required: false
     type: dict
     default: {}
@@ -318,7 +318,7 @@ def main():
             sheet_name=dict(required=False, type='str'),
             index_by_name=dict(required=False, type='bool', default=True),
             read_range=dict(required=False, type='dict', default={}),
-            updates_matrix=dict(required=False, type='list', default=[]),
+            updates_matrix=dict(required=False, type='list', elements='dict', default=[]),
             cell_style=dict(required=False, type='dict', default={}),
         ),
         supports_check_mode=False
