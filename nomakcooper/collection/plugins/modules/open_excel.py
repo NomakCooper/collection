@@ -36,12 +36,12 @@ options:
     required: false
     type: str
   op:
-    description:
-      - The operation to perform on the Excel file.
-      - V(r) - Read-only. Returns the content from the specified sheet or all sheets.
-      - V(w) - Write. Overwrites specified cells with new values.
-      - V(a) - Append. Creates one new row at the end of the sheet, writing each item in O(updates_matrix) to that row.
-      - V(i) - Insert. Inserts a new row above the row specified in the first item of O(updates_matrix) and writes the updates.
+    description: >
+      The operation to perform on the Excel file. Options:
+      V(r) - Read-only. Returns the content from the specified sheet or all sheets.
+      V(w) - Write. Overwrites specified cells with new values.
+      V(a) - Append. Creates one new row at the end of the sheet, writing each item in O(updates_matrix) to that row.
+      V(i) - Insert. Inserts a new row above the row specified in the first item of O(updates_matrix) and writes the updates.
     required: true
     type: str
     choices: ['r', 'w', 'a', 'i']
@@ -68,24 +68,23 @@ options:
     type: dict
     default: {}
   updates_matrix:
-    description:
-      - A list of dictionaries describing the cells to update.
-      - Each dictionary can include:
-        - V(cell_row) - The row to update (ignored in append mode).
-        - V(cell_col) - The column to update.
-        - V(cell_value) - The value to write.
+    description: >
+      A list of dictionaries describing the cells to update. Each dictionary can include:
+      V(cell_row) - The row to update (ignored in append mode).
+      V(cell_col) - The column to update.
+      V(cell_value) - The value to write.
     required: false
     type: list
+    elements: dict
     default: []
   cell_style:
-    description:
-      - A dictionary specifying optional style attributes for updated cells.
-      - Possible keys include:
-        - V(fontColor) - Hex RGB code for the font color.
-        - V(bgColor) - Hex RGB code for the cell background color.
-        - V(bold) - Boolean to set bold font.
-        - V(italic) - Boolean to set italic font.
-        - V(underline) - Boolean to set underline; if true, uses single underline.
+    description: >
+      A dictionary specifying optional style attributes for updated cells. Possible keys include:
+      V(fontColor) - Hex RGB code for the font color.
+      V(bgColor) - Hex RGB code for the cell background color.
+      V(bold) - Boolean to set bold font.
+      V(italic) - Boolean to set italic font.
+      V(underline) - Boolean to set underline; if true, uses single underline.
     required: false
     type: dict
     default: {}
@@ -96,7 +95,7 @@ notes:
 
 EXAMPLES = r'''
 - name: Read Excel workbook
-  open_excel:
+  nomakcooper.collection.open_excel:
     src: "/tmp/sample.xlsx"
     op: "r"
     index_by_name: true
@@ -105,7 +104,7 @@ EXAMPLES = r'''
     var: result
 
 - name: Overwrite specific cells
-  open_excel:
+  nomakcooper.collection.open_excel:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "w"
@@ -123,7 +122,7 @@ EXAMPLES = r'''
       bold: true
 
 - name: Append new row
-  open_excel:
+  nomakcooper.collection.open_excel:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "a"
@@ -138,7 +137,7 @@ EXAMPLES = r'''
       bold: true
 
 - name: Insert a new row above row 5
-  open_excel:
+  nomakcooper.collection.open_excel:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "i"
