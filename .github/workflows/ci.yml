@@ -1,0 +1,151 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  # Run CI once per day to test against the latest ansible-test versions
+  schedule:
+    - cron: '0 6 * * *'
+
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  sanity:
+    name: Sanity (Ⓐ${{ matrix.ansible }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ansible:
+          - stable-2.16
+          - stable-2.17
+          - stable-2.18
+          - devel
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Perform sanity testing
+        working-directory: ./nomakcooper/collection
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          testing-type: sanity
+          # Enable change detection to test only changed files (if applicable)
+          pull-request-change-detection: true
+
+  units:
+    name: Units (Ⓐ${{ matrix.ansible }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        ansible:
+          - stable-2.16
+          - stable-2.17
+          - stable-2.18
+          - devel
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Perform unit testing
+        working-directory: ./nomakcooper/collection
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          testing-type: units
+          # If your unit tests require additional collections, list them here:
+          test-deps: >
+            ansible.netcommon
+            ansible.utils
+          pull-request-change-detection: true
+
+  integration:
+    name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible:
+          - devel
+        python:
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
+          - '3.13'
+        include:
+          - ansible: stable-2.16
+            python: '2.7'
+          - ansible: stable-2.16
+            python: '3.6'
+          - ansible: stable-2.16
+            python: '3.7'
+          - ansible: stable-2.16
+            python: '3.8'
+          - ansible: stable-2.16
+            python: '3.9'
+          - ansible: stable-2.16
+            python: '3.10'
+          - ansible: stable-2.16
+            python: '3.11'
+          - ansible: stable-2.16
+            python: '3.12'
+          - ansible: stable-2.17
+            python: '3.7'
+          - ansible: stable-2.17
+            python: '3.8'
+          - ansible: stable-2.17
+            python: '3.9'
+          - ansible: stable-2.17
+            python: '3.10'
+          - ansible: stable-2.17
+            python: '3.11'
+          - ansible: stable-2.17
+            python: '3.12'
+          - ansible: stable-2.18
+            python: '3.8'
+          - ansible: stable-2.18
+            python: '3.9'
+          - ansible: stable-2.18
+            python: '3.10'
+          - ansible: stable-2.18
+            python: '3.11'
+          - ansible: stable-2.18
+            python: '3.12'
+          - ansible: stable-2.18
+            python: '3.13'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Perform integration testing
+        working-directory: ./nomakcooper/collection
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
+          testing-type: integration
+          # If your integration tests require additional collections, list them here:
+          test-deps: ansible.netcommon
+          pull-request-change-detection: true
+
+  check:
+    name: Check
+    if: always()
+    needs:
+      - sanity
+      - units
+      - integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
