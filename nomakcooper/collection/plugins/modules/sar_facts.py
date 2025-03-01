@@ -121,9 +121,10 @@ def run_sar_command(module, sar_bin, sar_file, sar_type, time_start, time_end, p
     except subprocess.CalledProcessError as e:
         module.fail_json(msg=f"Failed to execute SAR command: {str(e)}")
 
-# Aggiunta della funzione convert_to_24h per la conversione di orario 12H a 24H.
+
 def convert_to_24h(time_str, am_pm):
     return datetime.strptime(f"{time_str} {am_pm}", "%I:%M:%S %p").strftime("%H:%M:%S")
+
 
 def parse_sar_output(output, sar_type, average, date_str):
     """Parses SAR output by finding the header line and converting the first two columns (TIME, AM/PM)
@@ -169,6 +170,7 @@ def parse_sar_output(output, sar_type, average, date_str):
             continue
 
     return parsed_data
+
 
 def main():
     """Main execution of the Ansible module."""

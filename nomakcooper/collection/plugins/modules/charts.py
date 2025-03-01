@@ -216,8 +216,18 @@ changed:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-import plotly.graph_objects as go
+from ansible.module_utils.basic import missing_required_lib
 import os
+import traceback
+
+try:
+    import plotly.graph_objects as go
+except ImportError:
+    HAS_PLOTLY = False
+    PLOTLY_IMPORT_ERROR = traceback.format_exc()
+else:
+    HAS_PLOTLY = True
+
 
 def save_figure(fig, module):
     """ Save figure to the specified path with given format """
@@ -228,6 +238,7 @@ def save_figure(fig, module):
     os.makedirs(filepath, exist_ok=True)
 
     fig.write_image(f"{filepath}/{imgname}.{fileformat}")
+
 
 def create_line_or_bar_chart(module, chart_type):
     """ Create a Line or Bar chart with a professional light theme """
@@ -260,6 +271,7 @@ def create_line_or_bar_chart(module, chart_type):
     update_layout(fig, module, is_bar=(chart_type == "bar"))
     return fig
 
+
 def create_pie_or_donut_chart(module, chart_type):
     """ Create a Pie or Donut chart with a professional light theme """
     fig = go.Figure()
@@ -277,6 +289,7 @@ def create_pie_or_donut_chart(module, chart_type):
 
     update_layout(fig, module, is_pie=True)
     return fig
+
 
 def update_layout(fig, module, is_bar=False, is_pie=False):
     """ Update layout with a modern, professional aesthetic """
@@ -324,6 +337,7 @@ def update_layout(fig, module, is_bar=False, is_pie=False):
         paper_bgcolor="white"
     )
 
+
 def run_module():
     module_args = dict(
         titlechart=dict(type='str'),
@@ -348,7 +362,15 @@ def run_module():
         sizehole=dict(type='float', default=0.5),
     )
 
+
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+
+    if not HAS_PLOTLY:
+        module.fail_json(
+            msg=missing_required_lib('plotly'),
+            exception=PLOTLY_IMPORT_ERROR
+        )
+
     result = dict(changed=False)
 
     chart_type = module.params['type']
