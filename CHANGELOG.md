@@ -9,3 +9,7 @@
 * Fix charts module documentation syntax
 * Fix sar_facts module documentation syntax
 * Added Ansible Sanity and integration test
+
+### New module
+
+* Added new open_excel module
