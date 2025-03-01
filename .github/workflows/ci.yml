@@ -22,6 +22,12 @@ jobs:
           - stable-2.17
           - stable-2.18
           - devel
+        python:
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -34,7 +40,7 @@ jobs:
           collection-root: nomakcooper/collection
           sanity-skip-tests: "import, runtime-metadata"
           pre-test-cmd: pip install -r meta/requirements.txt
-          docker-image: none
+          python-version: ${{ matrix.python }}
           pull-request-change-detection: true
 
   units:
