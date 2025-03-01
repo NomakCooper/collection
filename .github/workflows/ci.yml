@@ -21,9 +21,6 @@ jobs:
         ansible:
           - stable-2.18
           - devel
-        python:
-          - '3.11'
-          - '3.12'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -36,7 +33,6 @@ jobs:
           collection-root: nomakcooper/collection
           sanity-skip-tests: "import, runtime-metadata"
           pre-test-cmd: pip install -r meta/requirements.txt
-          python-version: ${{ matrix.python }}
           pull-request-change-detection: true
 
   integration:
