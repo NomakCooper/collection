@@ -7,4 +7,5 @@
 ### Regular bugfix and feature release\.
 
 * Fix charts module documentation syntax
-* Added Ansible Sanity and integration test  
+* Fix sar_facts module documentation syntax
+* Added Ansible Sanity and integration test
