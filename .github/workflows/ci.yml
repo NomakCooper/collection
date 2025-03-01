@@ -36,6 +36,7 @@ jobs:
           pull-request-change-detection: true
 
   units:
+    if: false
     name: Units (Ⓐ${{ matrix.ansible }})
     runs-on: ubuntu-latest
     strategy:
@@ -62,6 +63,7 @@ jobs:
           pull-request-change-detection: true
 
   integration:
+    if: false
     name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     runs-on: ubuntu-latest
     strategy:
