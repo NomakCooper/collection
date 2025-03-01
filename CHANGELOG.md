@@ -1,6 +1,6 @@
 # nomakcooper.collection Release Notes
 
-# 1\.1\.9
+# 1\.2\.0
 
 ### Release Summary
 
