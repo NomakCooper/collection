@@ -33,7 +33,7 @@ jobs:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
           collection-root: nomakcooper/collection
-          target: plugins/modules
+          target: nomakcooper/collection/plugins/modules
           pre-test-cmd: pip install -r meta/requirements.txt
           pull-request-change-detection: true
 
