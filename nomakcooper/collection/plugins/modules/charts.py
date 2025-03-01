@@ -11,18 +11,14 @@ __metaclass__ = type
 DOCUMENTATION = r'''
 ---
 module: charts
-author:
-    - Marco Noce (@NomakCooper)
+short_description: Generate high-quality charts using Plotly and save them as images.
 description:
   - This module generates various types of charts (line, bar, pie, donut) and saves them as images.
-  - It provides customization options for titles, colors, sizes, fonts, and legend placements.
-  - Supports modern aesthetics with soft gridlines, contrasting backgrounds, and well-structured layout design.
-  - Ensures high readability and presentation-ready output.
-  - Uses Plotly for visualization.
+  - It provides customization options for titles, axis labels, colors, sizes, fonts, and legends.
+  - Uses Plotly and Kaleido for visualization and image generation.
 requirements:
-  - Kaleido
-  - Plotly
-short_description: Generate high-quality charts using Plotly and save them as images.
+  - plotly
+  - kaleido
 options:
   titlechart:
     description:
@@ -44,7 +40,6 @@ options:
       - X-axis data values.
     required: false
     type: list
-    elements: str
     default: []
   xaxisname:
     description:
@@ -56,21 +51,18 @@ options:
       - List of Y-axis data series.
     required: false
     type: list
-    elements: list
     default: []
   yaxisname:
     description:
       - Labels for the Y-axis data series.
     required: false
     type: list
-    elements: str
     default: []
   yaxiscolor:
     description:
       - Colors for the Y-axis data series.
     required: false
     type: list
-    elements: str
     default: []
   imgwidth:
     description:
@@ -137,21 +129,18 @@ options:
       - Data values for pie or donut chart slices.
     required: false
     type: list
-    elements: float
     default: []
   slicelabel:
     description:
       - Labels for pie or donut chart slices.
     required: false
     type: list
-    elements: str
     default: []
   slicecolor:
     description:
       - Colors for pie or donut chart slices.
     required: false
     type: list
-    elements: str
     default: []
   sizehole:
     description:
@@ -159,98 +148,49 @@ options:
     required: false
     type: float
     default: 0.5
+author:
+  - Marco Noce (@NomakCooper)
 '''
 
 EXAMPLES = r'''
-- name: set line axis data
-  set_fact:
-    xdata: ['00:00','02:00','04:00','06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00']
-    y1data: [20,20,30,40,50,80,70,60,40,30,20,10]
-    y2data: [05,15,25,20,45,50,40,35,30,20,15,05]
-
-- name: Generate line chart
+- name: Generate a line chart for CPU Usage Over Time
   charts:
     type: "line"
     titlechart: "CPU Usage Over Time"
-    xaxis: "{{ xdata }}"
-    xaxisname: "Timestamp"
-    yaxis: [
-      "{{ y1data }}",
-      "{{ y2data }}"
-    ]
-    yaxisname: ["User %", "System %"]
-    yaxiscolor: ["red", "blue"]
+    xaxis: ['00:00', '02:00', '04:00', '06:00', '08:00']
+    xaxisname: "Time"
+    yaxis: [[20, 30, 40, 50, 60]]
+    yaxisname: ["CPU Usage %"]
+    yaxiscolor: ["red"]
     shape_line: "spline"
     imgwidth: 1920
     imgheight: 1080
     path: "/charts"
     filename: "cpu_usage"
     format: "png"
-    titlelegend: "CPU Breakdown"
+    titlelegend: "Usage"
   delegate_to: localhost
 
-- name: Generate bar chart
-  charts:
-    type: "line"
-    titlechart: "CPU Usage Over Time"
-    xaxis: "{{ xdata }}"
-    xaxisname: "Timestamp"
-    yaxis: [
-      "{{ y1data }}",
-      "{{ y2data }}"
-    ]
-    yaxisname: ["User %", "System %"]
-    yaxiscolor: ["red", "blue"]
-    shape_line: "spline"
-    imgwidth: 1920
-    imgheight: 1080
-    path: "/charts"
-    filename: "cpu_usage"
-    format: "png"
-    titlelegend: "CPU Breakdown"
-  delegate_to: localhost
-
-- name: set pie fact
-  set_fact:
-    pielabel: ['sys','dba','webservice','application']
-    piedata: [10, 50, 20, 20]
-    piecolor: ["#1500ff", "#ff000d", "#eaff00", "#8700e8"]
-
-- name: Generate pie chart
+- name: Generate a pie chart for Resource Distribution
   charts:
     type: "pie"
-    titlechart: "Swap Usage Breakdown"
-    slicelabel: "{{ pielabel }}"
-    slicedata: "{{ piedata }}"
-    slicecolor: "{{ piecolor }}"
+    titlechart: "Resource Distribution"
+    slicedata: [10, 20, 30, 40]
+    slicelabel: ["A", "B", "C", "D"]
+    slicecolor: ["#ff0000", "#00ff00", "#0000ff", "#ffff00"]
     imgwidth: 800
     imgheight: 600
     path: "/charts"
-    filename: "app_pie"
+    filename: "resource_distribution"
     format: "png"
   delegate_to: localhost
-
-- name: Generate pie chart
-  charts:
-    type: "donut"
-    titlechart: "Swap Usage Breakdown"
-    slicelabel: "{{ pielabel }}"
-    slicedata: "{{ piedata }}"
-    slicecolor: "{{ piecolor }}"
-    imgwidth: 800
-    imgheight: 600
-    path: "/charts"
-    filename: "app_pie"
-    format: "png"
-  delegate_to: localhost
-
 '''
 
 RETURN = r'''
 changed:
-    description: The change status.
+    description: Indicates whether the chart image was successfully generated.
     type: bool
-    returned: if image files have been generated
+    returned: always
     sample: true
 '''
 
