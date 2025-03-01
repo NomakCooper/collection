@@ -35,13 +35,13 @@ options:
       - If omitted, defaults to appending V(_updated.xlsx) to the O(src) filename.
     required: false
     type: str
-    op:
+  op:
     description:
-        - The operation to perform on the Excel file. Options: 
-        - V(r) - Read-only. Returns the content from the specified sheet or all sheets.
-        - V(w) - Write. Overwrites specified cells with new values.
-        - V(a) - Append. Creates one new row at the end of the sheet, writing each item in O(updates_matrix) to that row.
-        - V(i) - Insert. Inserts a new row above the row specified in the first item of O(updates_matrix) and writes the updates.
+      - The operation to perform on the Excel file.
+      - V(r) - Read-only. Returns the content from the specified sheet or all sheets.
+      - V(w) - Write. Overwrites specified cells with new values.
+      - V(a) - Append. Creates one new row at the end of the sheet, writing each item in O(updates_matrix) to that row.
+      - V(i) - Insert. Inserts a new row above the row specified in the first item of O(updates_matrix) and writes the updates.
     required: true
     type: str
     choices: ['r', 'w', 'a', 'i']
@@ -192,6 +192,7 @@ except ImportError:
     openpyxl = None
 else:
     HAS_OPENPYXL = True
+
 
 def apply_cell_style(cell, cell_style):
     if not cell_style:
