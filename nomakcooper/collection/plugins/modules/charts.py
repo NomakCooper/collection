@@ -25,98 +25,137 @@ requirements:
 short_description: Generate high-quality charts using Plotly and save them as images.
 options:
   titlechart:
-    description: Title of the chart.
+    description:
+      - Title of the chart.
     required: false
     type: str
   type:
-    description: Type of chart to generate.
+    description:
+      - Type of chart to generate.
     required: true
     type: str
-    choices: [line, bar, pie, donut]
+    choices:
+      - line
+      - bar
+      - pie
+      - donut
   xaxis:
-    description: X-axis data values.
+    description:
+      - X-axis data values.
     required: false
     type: list
     elements: str
+    default: []
   xaxisname:
-    description: Label for the X-axis.
+    description:
+      - Label for the X-axis.
     required: false
     type: str
   yaxis:
-    description: List of Y-axis data series.
+    description:
+      - List of Y-axis data series.
     required: false
     type: list
     elements: list
+    default: []
   yaxisname:
-    description: Labels for the Y-axis data series.
+    description:
+      - Labels for the Y-axis data series.
     required: false
     type: list
     elements: str
+    default: []
   yaxiscolor:
-    description: Colors for the Y-axis data series.
+    description:
+      - Colors for the Y-axis data series.
     required: false
     type: list
     elements: str
+    default: []
   imgwidth:
-    description: Width of the generated chart image (in pixels).
+    description:
+      - Width of the generated chart image (in pixels).
     required: false
     type: int
     default: 1920
   imgheight:
-    description: Height of the generated chart image (in pixels).
+    description:
+      - Height of the generated chart image (in pixels).
     required: false
     type: int
     default: 1080
   shape_line:
-    description: Line shape for line charts.
+    description:
+      - Line shape for line charts.
     required: false
     type: str
-    choices: [spline, linear]
+    choices:
+      - spline
+      - linear
   format:
-    description: Image format for saving the chart.
+    description:
+      - Image format for saving the chart.
     required: false
     type: str
-    choices: [png, jpeg, webp, svg, pdf, eps]
+    choices:
+      - png
+      - jpeg
+      - webp
+      - svg
+      - pdf
+      - eps
     default: png
   path:
-    description: Path where the chart image will be saved.
+    description:
+      - Path where the chart image will be saved.
     required: true
     type: str
   filename:
-    description: Filename for the saved chart.
+    description:
+      - Filename for the saved chart image.
     required: true
     type: str
   fontsize:
-    description: Font size for labels and text.
+    description:
+      - Font size for labels and text.
     required: false
     type: int
     default: 20
   fontcolor:
-    description: Font color for chart text.
+    description:
+      - Font color for chart text.
     required: false
     type: str
     default: '#333333'
   titlelegend:
-    description: Title for the legend.
+    description:
+      - Title for the legend.
     required: false
     type: str
   slicedata:
-    description: Data values for pie or donut chart slices.
+    description:
+      - Data values for pie or donut chart slices.
     required: false
     type: list
     elements: float
+    default: []
   slicelabel:
-    description: Labels for pie or donut chart slices.
+    description:
+      - Labels for pie or donut chart slices.
     required: false
     type: list
     elements: str
+    default: []
   slicecolor:
-    description: Colors for pie or donut chart slices.
+    description:
+      - Colors for pie or donut chart slices.
     required: false
     type: list
     elements: str
+    default: []
   sizehole:
-    description: Size of the hole in a donut chart (0 for a full pie chart).
+    description:
+      - Size of the hole in a donut chart (0 for a full pie chart).
     required: false
     type: float
     default: 0.5
@@ -220,6 +259,7 @@ from ansible.module_utils.basic import missing_required_lib
 import os
 import traceback
 
+PLOTLY_IMPORT_ERROR = ""
 try:
     import plotly.graph_objects as go
 except ImportError:
@@ -362,7 +402,6 @@ def run_module():
         sizehole=dict(type='float', default=0.5),
     )
 
-
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     if not HAS_PLOTLY:
@@ -387,8 +426,10 @@ def run_module():
 
     module.exit_json(**result)
 
+
 def main():
     run_module()
+
 
 if __name__ == '__main__':
     main()

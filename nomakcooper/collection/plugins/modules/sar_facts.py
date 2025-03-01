@@ -51,6 +51,37 @@ author:
   - Marco Noce (@NomakCooper)
 '''
 
+EXAMPLES = r'''
+# Gather CPU performance metrics for a specific date and time range.
+- name: Gather CPU SAR facts between 08:00 and 10:00
+  sar_facts:
+    date_start: "2025-05-01"
+    date_end: "2025-05-01"
+    time_start: "08:00:00"
+    time_end: "10:00:00"
+    type: cpu
+
+# Gather memory usage SAR data for a single day.
+- name: Retrieve memory usage data for a day
+  sar_facts:
+    date_start: "2025-05-01"
+    type: memory
+
+# Retrieve disk statistics with partition details.
+- name: Gather disk usage statistics with partition information
+  sar_facts:
+    date_start: "2025-05-01"
+    type: disk
+    partition: true
+
+# Retrieve average load statistics.
+- name: Gather average load statistics
+  sar_facts:
+    date_start: "2025-05-01"
+    type: load
+    average: true
+'''
+
 from ansible.module_utils.basic import AnsibleModule
 import os
 import subprocess
