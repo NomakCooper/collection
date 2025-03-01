@@ -32,7 +32,7 @@ jobs:
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
-          collection-path: nomakcooper/collection
+          collection-root: nomakcooper/collection
           pull-request-change-detection: true
 
   units:
@@ -55,7 +55,7 @@ jobs:
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: units
-          collection-path: nomakcooper/collection
+          collection-root: nomakcooper/collection
           test-deps: |
             ansible.netcommon
             ansible.utils
@@ -127,7 +127,7 @@ jobs:
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
           testing-type: integration
-          collection-path: nomakcooper/collection
+          collection-root: nomakcooper/collection
           test-deps: ansible.netcommon
           pull-request-change-detection: true
 
