@@ -12,7 +12,6 @@ DOCUMENTATION = r'''
 ---
 module: open_excel
 short_description: Read and update Excel (.xlsx) files using openpyxl
-version_added: "1.1.9"
 author:
   - "Marco Noce (@NomakCooper)"
 requirements:
