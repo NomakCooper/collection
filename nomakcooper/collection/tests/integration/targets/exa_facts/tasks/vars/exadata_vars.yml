@@ -1,0 +1,38 @@
+# Copyright (c) 2025, Marco Noce <nce.marco@gmail.com>
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+fake_imageinfo_output: |
+  Image image type: production
+  Kernel version: 4.14.35-2047.518.4.2.el7uek.x86_64
+  Image created: 2023-03-02 03:40:44 -0800
+  Image status: success
+  Uptrack kernel version: 4.14.35-2047.522.3.el7uek.x86_64
+  Node type: GUEST
+  Image version: 22.1.9.0.0.230302
+  System partition on device: /dev/mapper/VGExaDb-LVDbSys2
+  Image label: OSS_22.1.9.0.0_LINUX.X64_230302
+  Image kernel version: 4.14.35-2047.518.4.2.el7uek
+  Install type: XEN Guest with InfiniBand
+  Image activated: 2023-09-02 04:02:42 +0200
+
+fake_exadata_hw_output: "HVM domU"
+
+fake_dmidecode_output: |
+  System Information
+      SKU Number: B88854
+      UUID: 089271ba-b91f-4230-acce-be01a22fab09
+      Family: Not Specified
+      Serial Number: 089271ba-b91f-4230-acce-be01a22fab09
+      Version: 4.4.4OVM
+      Product Name: HVM domU
+      Wake-up Type: Power Switch
+      Manufacturer: Xen
+
+fake_databasemachine_xml: |
+  <databasemachine>
+     <ORACLE_CLUSTER>
+        <name>TestCluster</name>
+        <nodes>3</nodes>
+     </ORACLE_CLUSTER>
+  </databasemachine>
