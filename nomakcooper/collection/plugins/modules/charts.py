@@ -30,17 +30,12 @@ options:
       - Type of chart to generate.
     required: true
     type: str
-    choices:
-      - line
-      - bar
-      - pie
-      - donut
+    choices: [line, bar, pie, donut]
   xaxis:
     description:
       - X-axis data values.
     required: false
     type: list
-    elements: str
     default: []
   xaxisname:
     description:
@@ -49,24 +44,21 @@ options:
     type: str
   yaxis:
     description:
-      - List of Y-axis data series. Each series should be a list of numeric values.
+      - List of Y-axis data series.
     required: false
     type: list
-    elements: list
     default: []
   yaxisname:
     description:
       - Labels for the Y-axis data series.
     required: false
     type: list
-    elements: str
     default: []
   yaxiscolor:
     description:
       - Colors for the Y-axis data series.
     required: false
     type: list
-    elements: str
     default: []
   imgwidth:
     description:
@@ -85,21 +77,13 @@ options:
       - Line shape for line charts.
     required: false
     type: str
-    choices:
-      - spline
-      - linear
+    choices: [spline, linear]
   format:
     description:
       - Image format for saving the chart.
     required: false
     type: str
-    choices:
-      - png
-      - jpeg
-      - webp
-      - svg
-      - pdf
-      - eps
+    choices: [png, jpeg, webp, svg, pdf, eps]
     default: png
   path:
     description:
@@ -133,21 +117,18 @@ options:
       - Data values for pie or donut chart slices.
     required: false
     type: list
-    elements: float
     default: []
   slicelabel:
     description:
       - Labels for pie or donut chart slices.
     required: false
     type: list
-    elements: str
     default: []
   slicecolor:
     description:
       - Colors for pie or donut chart slices.
     required: false
     type: list
-    elements: str
     default: []
   sizehole:
     description:
