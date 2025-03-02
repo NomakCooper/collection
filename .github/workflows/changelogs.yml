@@ -4,6 +4,11 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
+        default: 'manual-version'
 
 jobs:
   changelog:
@@ -22,12 +27,12 @@ jobs:
         run: pip install towncrier
 
       - name: Generate Changelog
-        run: towncrier --version "${{ github.event.release.tag_name }}"
+        run: towncrier --version "${{ github.event.inputs.version }}"
 
       - name: Commit and Push Changelog Update
         run: |
           git config user.name "github-actions[releasebot]"
           git config user.email "github-actions[releasebot]@users.noreply.github.com"
           git add CHANGELOG.md
-          git commit -m "chore: update changelog for release ${{ github.event.release.tag_name }} [skip ci]" || echo "No changes to commit"
+          git commit -m "chore: update changelog for release ${{ github.event.inputs.version }} [skip ci]" || echo "No changes to commit"
           git push
