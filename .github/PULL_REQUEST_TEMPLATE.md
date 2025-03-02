@@ -9,7 +9,6 @@
 - [ ] Bugfix Pull Request
 - [ ] Feature Pull Request
 - [ ] New Module/Plugin Pull Request
-- [ ] Test Pull Request
 
 ##### COMPONENT NAME
 <!--- Write the SHORT NAME of the module below. -->
