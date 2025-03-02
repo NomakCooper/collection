@@ -1,0 +1,77 @@
+name: Auto PR
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  process_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Process PR Inline
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const prBody = pr.body || "";
+            
+            // --- Determine labels based on checkboxes in ISSUE TYPE section ---
+            // The PR template contains checkboxes like:
+            // - [ ] Bugfix Pull Request
+            // - [ ] Feature Pull Request
+            // - [ ] New Module/Plugin Pull Request
+            // We'll assign additional labels based on which box is checked.
+            const labelsToAdd = ["needs_triage", "module"]; // Always add these labels
+
+            // Check for a checked box. A simple way is to look for "- [x] <Label>" in the PR body.
+            if (prBody.match(/- \[x\] Bugfix Pull Request/i)) {
+              labelsToAdd.push("bug");
+            }
+            if (prBody.match(/- \[x\] Feature Pull Request/i)) {
+              labelsToAdd.push("feature");
+            }
+            if (prBody.match(/- \[x\] New Module\/Plugin Pull Request/i)) {
+              // Optionally add a specific label for new modules, if desired.
+              labelsToAdd.push("new_module");
+            }
+            
+            // Add labels to the PR
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: labelsToAdd,
+            });
+            
+            // --- Extract COMPONENT NAME ---
+            // Look for the "##### COMPONENT NAME" section.
+            // For example, the template:
+            // ##### COMPONENT NAME
+            // <!--- Write the SHORT NAME of the module below. -->
+            // charts.py
+            const componentRegex = /#####\s*COMPONENT NAME\s*\n(?:\s*<!---.*\n)?\s*([a-zA-Z0-9_\-]+\.py)/i;
+            let componentName = "";
+            const match = prBody.match(componentRegex);
+            if (match && match[1]) {
+              componentName = match[1].trim();
+            }
+            // Fallback if no component name was provided
+            if (!componentName) {
+              componentName = "unknown.py";
+            }
+            
+            // --- Build display path and file URL ---
+            // Display path: plugins/modules/charts.py
+            const displayPath = `plugins/modules/${componentName}`;
+            // Full URL (adjust branch and repository structure as needed)
+            const fileUrl = `https://github.com/NomakCooper/collection/blob/main/nomakcooper/collection/${displayPath}`;
+            
+            // --- Post a comment ---
+            const commentBody = `Files identified in the description:\n\n- [\`${displayPath}\`](${fileUrl})`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: commentBody,
+            });
