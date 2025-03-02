@@ -14,34 +14,48 @@ jobs:
           script: |
             const issue = context.payload.issue;
             const issueBody = issue.body || "";
-            const labelsToAdd = ["needs_triage", "module"];
 
+            // Always add these labels.
+            const baseLabels = ["needs_triage", "module"];
+            // Determine conditional label.
             if (issueBody.includes("Bug Report")) {
-              labelsToAdd.push("bug");
+              baseLabels.push("bug");
             } else if (issueBody.includes("Feature Idea") || issueBody.includes("✨ Feature request")) {
-              labelsToAdd.push("feature");
+              baseLabels.push("feature");
             }
-
+            
+            // Add labels to the issue.
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.number,
-              labels: labelsToAdd,
+              labels: baseLabels,
             });
-
-            const componentSectionRegex = /#####\s*COMPONENT NAME\s*\n\s*([a-zA-Z0-9_\-]+\.py)/i;
-            let componentName = "COMPONENT_NAME";
-            const match = issueBody.match(componentSectionRegex);
+            
+            // Extract component name only from the dedicated section.
+            // This regex looks for the header "##### COMPONENT NAME", optionally a comment line,
+            // and then a line containing a file name ending in .py.
+            const componentRegex = /#####\s*COMPONENT NAME\s*\n(?:\s*<!---.*\n)?\s*([a-zA-Z0-9_\-]+\.py)/i;
+            let componentName = "";
+            const match = issueBody.match(componentRegex);
             if (match && match[1]) {
               componentName = match[1].trim();
             }
-
-            let componentPath = componentName;
-            if (componentName.endsWith('.py')) {
-              componentPath = `nomakcooper/collection/plugins/modules/${componentName}`;
+            // Fallback if no component found.
+            if (!componentName) {
+              componentName = "unknown.py";
             }
-
-            const commentBody = `Files identified in the description:\n\n[${componentName}](${componentPath})`;
+            
+            // Construct the display path and full URL.
+            // Display path: plugins/modules/charts.py
+            const displayPath = `plugins/modules/${componentName}`;
+            // Full URL (adjust branch and repository structure if needed).
+            const fileUrl = `https://github.com/NomakCooper/collection/blob/main/nomakcooper/collection/${displayPath}`;
+            
+            // Build the comment in the desired format.
+            const commentBody = `Files identified in the description:\n\n- [\`${displayPath}\`](${fileUrl})`;
+            
+            // Post the comment on the issue.
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
