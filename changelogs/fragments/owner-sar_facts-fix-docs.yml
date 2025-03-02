@@ -1,0 +1,2 @@
+bugfixes:
+  - sar_facts - fix documentation for ansible sanity tests

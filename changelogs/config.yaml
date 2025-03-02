@@ -1,0 +1,30 @@
+---
+
+changelog_filename_template: ../CHANGELOG.md
+changelog_filename_version_depth: 0
+changes_file: changelog.yaml
+changes_format: combined
+keep_fragments: false
+mention_ancestor: true
+flatmap: true
+new_plugins_after_name: newmodule
+notesdir: fragments
+output_formats:
+  - md
+prelude_section_name: release_summary
+prelude_section_title: Release Summary
+sections:
+  - - major_changes
+    - Major Changes
+  - - minor_changes
+    - Minor Changes
+  - - bugfixes
+    - Bugfixes
+  - - new_module
+    - New Module
+title: nomakcooper.collection
+trivial_section_name: trivial
+use_fqcn: true
+add_plugin_period: true
+changelog_nice_yaml: true
+changelog_sort: version
