@@ -18,7 +18,7 @@ assignees:
 - Bug Report
 
 ##### COMPONENT NAME
-<!--- Write the short name of the module below -->
+<!--- Write the short name of the module below with .py extension -->
 
 ##### ANSIBLE VERSION
 <!--- Paste verbatim output from "ansible --version" between quotes -->

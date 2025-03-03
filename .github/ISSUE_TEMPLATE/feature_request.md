@@ -12,7 +12,7 @@ about: Suggest an idea for this project
 - Feature Idea
 
 ##### COMPONENT NAME
-<!--- Write the short name of the module below -->
+<!--- Write the short name of the module below with .py extension -->
 
 ##### ADDITIONAL INFORMATION
 <!--- Describe how the feature would be used, why it is needed and what it would solve -->

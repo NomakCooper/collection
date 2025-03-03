@@ -11,7 +11,7 @@
 - [ ] New Module/Plugin Pull Request
 
 ##### COMPONENT NAME
-<!--- Write the SHORT NAME of the module below. -->
+<!--- Write the SHORT NAME of the module below with .py extension. -->
 
 ##### ADDITIONAL INFORMATION
 <!--- Include additional information to help people understand the change here -->
