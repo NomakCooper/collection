@@ -22,7 +22,7 @@ description:
   - For updates, you can overwrite cells, append new rows, or insert rows. You can also apply custom cell styles.
   - The original Excel file is not overwritten unless you set O(dest) to the same path as O(src).
   - This module supports only .xlsx or .xlsm files.
-version_added: "1.2.1"
+version_added: "1.2.0"
 options:
   src:
     description:
