@@ -10,31 +10,34 @@
 
 .. Anchors
 
-.. _ansible_collections.nomakcooper.collection.open_excel_module:
+.. _ansible_collections.nomakcooper.collection.open_xl_module:
 
 .. Anchors: short name for ansible.builtin
 
 .. Title
 
-nomakcooper.collection.open_excel module -- Read and update Excel (.xlsx) files using openpyxl
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+nomakcooper.collection.open_xl module -- Read and update Excel (.xlsx) files using openpyxl
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
 .. note::
-    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.2.0).
+    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.2.1).
 
     It is not included in ``ansible-core``.
     To check whether it is installed, run :code:`ansible-galaxy collection list`.
 
     To install it, use: :code:`ansible-galaxy collection install nomakcooper.collection`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.nomakcooper.collection.open_excel_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.nomakcooper.collection.open_xl_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`nomakcooper.collection.open_excel`.
+    To use it in a playbook, specify: :code:`nomakcooper.collection.open_xl`.
 
 .. version_added
 
+.. rst-class:: ansible-version-added
+
+New in nomakcooper.collection 1.2.0
 
 .. contents::
    :local:
@@ -51,7 +54,7 @@ Synopsis
 - This module reads from or writes to Excel (.xlsx) files using the openpyxl Python library.
 - It supports reading the entire workbook or a single worksheet, optionally limited to a given cell range.
 - For updates, you can overwrite cells, append new rows, or insert rows. You can also apply custom cell styles.
-- The original Excel file is not overwritten unless you set :ansopt:`nomakcooper.collection.open\_excel#module:dest` to the same path as :ansopt:`nomakcooper.collection.open\_excel#module:src`.
+- The original Excel file is not overwritten unless you set :ansopt:`nomakcooper.collection.open\_xl#module:dest` to the same path as :ansopt:`nomakcooper.collection.open\_xl#module:src`.
 - This module supports only .xlsx or .xlsm files.
 
 
@@ -60,7 +63,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.nomakcooper.collection.open_excel_module_requirements:
+.. _ansible_collections.nomakcooper.collection.open_xl_module_requirements:
 
 Requirements
 ------------
@@ -94,7 +97,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-cell_style"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-cell_style:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-cell_style:
 
       .. rst-class:: ansible-option-title
 
@@ -132,7 +135,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-dest"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-dest:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-dest:
 
       .. rst-class:: ansible-option-title
 
@@ -156,7 +159,7 @@ Parameters
 
       Destination file path for updated Excel content.
 
-      If omitted, defaults to appending :ansval:`\_updated.xlsx` to the :ansopt:`nomakcooper.collection.open\_excel#module:src` filename.
+      If omitted, defaults to appending :ansval:`\_updated.xlsx` to the :ansopt:`nomakcooper.collection.open\_xl#module:src` filename.
 
 
       .. raw:: html
@@ -168,7 +171,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-index_by_name"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-index_by_name:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-index_by_name:
 
       .. rst-class:: ansible-option-title
 
@@ -210,7 +213,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-op"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-op:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-op:
 
       .. rst-class:: ansible-option-title
 
@@ -232,7 +235,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The operation to perform on the Excel file. Options: :ansval:`r` - Read-only. Returns the content from the specified sheet or all sheets. :ansval:`w` - Write. Overwrites specified cells with new values. :ansval:`a` - Append. Creates one new row at the end of the sheet, writing each item in :ansopt:`nomakcooper.collection.open\_excel#module:updates\_matrix` to that row. :ansval:`i` - Insert. Inserts a new row above the row specified in the first item of :ansopt:`nomakcooper.collection.open\_excel#module:updates\_matrix` and writes the updates.
+      The operation to perform on the Excel file. Options: :ansval:`r` - Read-only. Returns the content from the specified sheet or all sheets. :ansval:`w` - Write. Overwrites specified cells with new values. :ansval:`a` - Append. Creates one new row at the end of the sheet, writing each item in :ansopt:`nomakcooper.collection.open\_xl#module:updates\_matrix` to that row. :ansval:`i` - Insert. Inserts a new row above the row specified in the first item of :ansopt:`nomakcooper.collection.open\_xl#module:updates\_matrix` and writes the updates.
 
 
       .. rst-class:: ansible-option-line
@@ -254,7 +257,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-read_range"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-read_range:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-read_range:
 
       .. rst-class:: ansible-option-title
 
@@ -296,7 +299,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-sheet_name"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-sheet_name:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-sheet_name:
 
       .. rst-class:: ansible-option-title
 
@@ -320,9 +323,9 @@ Parameters
 
       Name of the worksheet to operate on.
 
-      For :ansopt:`nomakcooper.collection.open\_excel#module:op=r`\ , if omitted, all sheets are read.
+      For :ansopt:`nomakcooper.collection.open\_xl#module:op=r`\ , if omitted, all sheets are read.
 
-      For :ansopt:`nomakcooper.collection.open\_excel#module:op=w`\ , :ansopt:`nomakcooper.collection.open\_excel#module:op=a`\ , or :ansopt:`nomakcooper.collection.open\_excel#module:op=i`\ , this parameter is required.
+      For :ansopt:`nomakcooper.collection.open\_xl#module:op=w`\ , :ansopt:`nomakcooper.collection.open\_xl#module:op=a`\ , or :ansopt:`nomakcooper.collection.open\_xl#module:op=i`\ , this parameter is required.
 
 
       .. raw:: html
@@ -334,7 +337,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-src"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-src:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-src:
 
       .. rst-class:: ansible-option-title
 
@@ -368,7 +371,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-updates_matrix"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__parameter-updates_matrix:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__parameter-updates_matrix:
 
       .. rst-class:: ansible-option-title
 
@@ -425,7 +428,7 @@ Examples
 .. code-block:: yaml+jinja
 
     - name: Read Excel workbook
-      nomakcooper.collection.open_excel:
+      nomakcooper.collection.open_xl:
         src: "/tmp/sample.xlsx"
         op: "r"
         index_by_name: true
@@ -434,7 +437,7 @@ Examples
         var: result
 
     - name: Overwrite specific cells
-      nomakcooper.collection.open_excel:
+      nomakcooper.collection.open_xl:
         src: "/tmp/sample.xlsx"
         dest: "/tmp/sample_updated.xlsx"
         op: "w"
@@ -452,7 +455,7 @@ Examples
           bold: true
 
     - name: Append new row
-      nomakcooper.collection.open_excel:
+      nomakcooper.collection.open_xl:
         src: "/tmp/sample.xlsx"
         dest: "/tmp/sample_updated.xlsx"
         op: "a"
@@ -467,7 +470,7 @@ Examples
           bold: true
 
     - name: Insert a new row above row 5
-      nomakcooper.collection.open_excel:
+      nomakcooper.collection.open_xl:
         src: "/tmp/sample.xlsx"
         dest: "/tmp/sample_updated.xlsx"
         op: "i"
@@ -509,7 +512,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-changed"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__return-changed:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__return-changed:
 
       .. rst-class:: ansible-option-title
 
@@ -554,7 +557,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-result"></div>
 
-      .. _ansible_collections.nomakcooper.collection.open_excel_module__return-result:
+      .. _ansible_collections.nomakcooper.collection.open_xl_module__return-result:
 
       .. rst-class:: ansible-option-title
 

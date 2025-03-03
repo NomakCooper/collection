@@ -22,7 +22,7 @@ nomakcooper.collection.sar_facts module -- Collect system activity report (SAR) 
 .. Collection note
 
 .. note::
-    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.2.0).
+    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.2.1).
 
     It is not included in ``ansible-core``.
     To check whether it is installed, run :code:`ansible-galaxy collection list`.
@@ -33,6 +33,9 @@ nomakcooper.collection.sar_facts module -- Collect system activity report (SAR) 
 
 .. version_added
 
+.. rst-class:: ansible-version-added
+
+New in nomakcooper.collection 1.1.0
 
 .. contents::
    :local:
