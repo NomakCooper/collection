@@ -12,8 +12,8 @@
     src: files/sample.xlsx
     dest: /tmp/test_sample.xlsx
 
-- name: Read the initial Excel file using open_excel (read mode)
-  nomakcooper.collection.open_excel:
+- name: Read the initial Excel file using open_xl (read mode)
+  nomakcooper.collection.open_xl:
     src: "/tmp/test_sample.xlsx"
     op: "r"
     index_by_name: true
@@ -26,7 +26,7 @@
     fail_msg: "Expected two data rows in the initial file."
 
 - name: Overwrite cell value in row 2 (update operation)
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/test_sample.xlsx"
     dest: "/tmp/test_sample.xlsx"
     op: "w"
@@ -38,7 +38,7 @@
   register: write_result
 
 - name: Read Excel file after update
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/test_sample.xlsx"
     op: "r"
     index_by_name: true
@@ -50,8 +50,8 @@
       - "read_after_update.result['Sheet'][0]['Value'] == 150"
     fail_msg: "Cell value was not updated as expected."
 
-- name: Append a new row using open_excel (append operation)
-  nomakcooper.collection.open_excel:
+- name: Append a new row using open_xl (append operation)
+  nomakcooper.collection.open_xl:
     src: "/tmp/test_sample.xlsx"
     dest: "/tmp/test_sample.xlsx"
     op: "a"
@@ -66,7 +66,7 @@
   register: append_result
 
 - name: Read Excel file after append
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/test_sample.xlsx"
     op: "r"
     index_by_name: true
@@ -78,8 +78,8 @@
       - "'Charlie' in (read_after_append.result['Sheet'] | map(attribute='Name') | list)"
     fail_msg: "New row was not appended correctly."
 
-- name: Insert a row above row 2 using open_excel (insert operation)
-  nomakcooper.collection.open_excel:
+- name: Insert a row above row 2 using open_xl (insert operation)
+  nomakcooper.collection.open_xl:
     src: "/tmp/test_sample.xlsx"
     dest: "/tmp/test_sample.xlsx"
     op: "i"
@@ -94,7 +94,7 @@
   register: insert_result
 
 - name: Read Excel file after insert
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/test_sample.xlsx"
     op: "r"
     index_by_name: true
