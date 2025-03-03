@@ -11,6 +11,8 @@ on:
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/PULL_REQUEST_TEMPLATE.md'
       - 'nomakcooper/collection/README.md'
+      - 'nomakcooper/collection/changelogs/**'
+      - 'nomakcooper/collection/changelogs/CHANGELOG.rst'
   pull_request:
   schedule:
     - cron: '0 6 * * *'
