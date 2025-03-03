@@ -1,0 +1,40 @@
+objects:
+  role: {}
+plugins:
+  become: {}
+  cache: {}
+  callback: {}
+  cliconf: {}
+  connection: {}
+  filter: {}
+  httpapi: {}
+  inventory: {}
+  lookup: {}
+  module:
+    charts:
+      description: Generate high-quality charts using Plotly and save them as images.
+      name: charts
+      namespace: ''
+      version_added: 1.1.0
+    exa_facts:
+      description: Gathers facts about Oracle Exadata Machine and rack.
+      name: exa_facts
+      namespace: ''
+      version_added: 1.1.0
+    open_excel:
+      description: Read and update Excel (.xlsx) files using openpyxl
+      name: open_excel
+      namespace: ''
+      version_added: 1.2.0
+    sar_facts:
+      description: Collect system activity report (SAR) data for system performance
+        monitoring.
+      name: sar_facts
+      namespace: ''
+      version_added: 1.1.0
+  netconf: {}
+  shell: {}
+  strategy: {}
+  test: {}
+  vars: {}
+version: 1.2.0

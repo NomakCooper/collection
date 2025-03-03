@@ -16,6 +16,7 @@ author:
 description:
     - Gathers facts about Oracle Exadata Machine and rack.
     - This module currently supports Oracle Exadata Machine.
+version_added: "1.1.0"
 requirements:
   - /usr/local/bin/imageinfo
   - /usr/sbin/exadata.img.hw

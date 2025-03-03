@@ -15,6 +15,7 @@ description:
   - Retrieves SAR data using the `sar` command from system logs.
   - Supports filtering by date range, time range, and partition details.
   - Returns performance metrics such as CPU utilization, memory usage, disk activity, and network statistics.
+version_added: "1.1.0"
 options:
   date_start:
     description: Start date for collecting SAR data (format YYYY-MM-DD).

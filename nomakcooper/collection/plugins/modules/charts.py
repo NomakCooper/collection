@@ -16,6 +16,7 @@ description:
   - This module generates various types of charts (line, bar, pie, donut) and saves them as images.
   - It provides customization options for titles, axis labels, colors, sizes, fonts, and legends.
   - Uses Plotly and Kaleido for visualization and image generation.
+version_added: "1.1.0"
 requirements:
   - plotly
   - kaleido

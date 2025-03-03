@@ -1,0 +1,15 @@
+ancestor: null
+releases:
+  1.2.0:
+    changes:
+      bugfixes:
+      - charts - Fix documentation syntax for ansible sanity tests.
+      - sar_facts - Fix documentation syntax for ansible sanity tests.
+    fragments:
+    - owner-charts-fix-docs.yml
+    - owner-sar_facts-fix-docs.yml
+    modules:
+    - description: Read and update Excel (.xlsx) files using openpyxl.
+      name: open_excel
+      namespace: ''
+    release_date: '2025-03-03'
