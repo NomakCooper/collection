@@ -4,6 +4,19 @@ nomakcooper.collection Release Notes
 
 .. contents:: Topics
 
+v1.2.1
+======
+
+Major Changes
+-------------
+
+- open_excel - open excel module is now open_xl.
+
+New Modules
+-----------
+
+- nomakcooper.collection.open_xl - Read and update Excel (.xlsx) files using openpyxl.
+
 v1.2.0
 ======
 

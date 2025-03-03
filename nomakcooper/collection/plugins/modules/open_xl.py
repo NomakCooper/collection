@@ -10,7 +10,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: open_excel
+module: open_xl
 short_description: Read and update Excel (.xlsx) files using openpyxl
 author:
   - "Marco Noce (@NomakCooper)"
@@ -22,7 +22,7 @@ description:
   - For updates, you can overwrite cells, append new rows, or insert rows. You can also apply custom cell styles.
   - The original Excel file is not overwritten unless you set O(dest) to the same path as O(src).
   - This module supports only .xlsx or .xlsm files.
-version_added: "1.2.0"
+version_added: "1.2.1"
 options:
   src:
     description:
@@ -95,7 +95,7 @@ notes:
 
 EXAMPLES = r'''
 - name: Read Excel workbook
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     op: "r"
     index_by_name: true
@@ -104,7 +104,7 @@ EXAMPLES = r'''
     var: result
 
 - name: Overwrite specific cells
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "w"
@@ -122,7 +122,7 @@ EXAMPLES = r'''
       bold: true
 
 - name: Append new row
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "a"
@@ -137,7 +137,7 @@ EXAMPLES = r'''
       bold: true
 
 - name: Insert a new row above row 5
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "i"

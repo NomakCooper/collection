@@ -1,6 +1,6 @@
-# open_excel Module
+# open_xl Module
 
-The **open_excel** module allows you to read from and update Excel (.xlsx) files using the [openpyxl](https://openpyxl.readthedocs.io/) Python library. It supports various operations on Excel workbooks such as reading an entire workbook (or a specific worksheet), writing updates to cells, appending new rows, or inserting rows with custom cell styling. This module supports only `.xlsx` and `.xlsm` files.
+The **open_xl** module allows you to read from and update Excel (.xlsx) files using the [openpyxl](https://openpyxl.readthedocs.io/) Python library. It supports various operations on Excel workbooks such as reading an entire workbook (or a specific worksheet), writing updates to cells, appending new rows, or inserting rows with custom cell styling. This module supports only `.xlsx` and `.xlsm` files.
 
 > **Note:** This module requires the `openpyxl` Python library to be installed.
 
@@ -27,7 +27,7 @@ The **open_excel** module allows you to read from and update Excel (.xlsx) files
 
 ## Module Description
 
-The **open_excel** module provides the ability to read or modify Excel files. It can:
+The **open_xl** module provides the ability to read or modify Excel files. It can:
 
 - **Read:** Extract data from one or more worksheets. When reading, you can choose to use the header row as keys (dictionary keys) or use default column names (`col_1`, `col_2`, etc.).
 - **Write (Update):** Overwrite cell values in an existing worksheet.
@@ -84,7 +84,7 @@ The module returns two keys: `changed` and `result`.
 **Read an Excel Workbook:**
 ```yaml
 - name: Read Excel workbook
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     op: "r"
     index_by_name: true
@@ -97,7 +97,7 @@ The module returns two keys: `changed` and `result`.
 **Overwrite Specific Cells**
 ```yaml
 - name: Overwrite specific cells
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "w"
@@ -117,7 +117,7 @@ The module returns two keys: `changed` and `result`.
 **Append a New Row**
 ```yaml
 - name: Append new row
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "a"
@@ -134,7 +134,7 @@ The module returns two keys: `changed` and `result`.
 **Insert a New Row Above Row 5**
 ```yaml
 - name: Insert a new row above row 5
-  nomakcooper.collection.open_excel:
+  nomakcooper.collection.open_xl:
     src: "/tmp/sample.xlsx"
     dest: "/tmp/sample_updated.xlsx"
     op: "i"

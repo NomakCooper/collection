@@ -21,11 +21,11 @@ plugins:
       name: exa_facts
       namespace: ''
       version_added: 1.1.0
-    open_excel:
+    open_xl:
       description: Read and update Excel (.xlsx) files using openpyxl
-      name: open_excel
+      name: open_xl
       namespace: ''
-      version_added: 1.2.0
+      version_added: 1.2.1
     sar_facts:
       description: Collect system activity report (SAR) data for system performance
         monitoring.
@@ -37,4 +37,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 1.2.0
+version: 1.2.1

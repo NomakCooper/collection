@@ -13,3 +13,14 @@ releases:
       name: open_excel
       namespace: ''
     release_date: '2025-03-03'
+  1.2.1:
+    changes:
+      major_changes:
+      - open_excel - open excel module is now open_xl.
+    fragments:
+    - owner-open_xl-refactor.yml
+    modules:
+    - description: Read and update Excel (.xlsx) files using openpyxl.
+      name: open_xl
+      namespace: ''
+    release_date: '2025-03-03'
