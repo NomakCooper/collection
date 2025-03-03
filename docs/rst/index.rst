@@ -7,7 +7,7 @@
 Nomakcooper.Collection
 ======================
 
-Collection version 1.0.10
+Collection version 1.2.0
 
 .. contents::
    :local:
@@ -24,7 +24,7 @@ Ansible Custom Module Collection
 
 **Supported ansible-core versions:**
 
-* 2.12.0 or newer
+* 2.15.0 or newer
 
 .. ansible-links::
 
@@ -52,6 +52,7 @@ Modules
 
 * :ansplugin:`charts module <nomakcooper.collection.charts#module>` -- Generate high-quality charts using Plotly and save them as images.
 * :ansplugin:`exa_facts module <nomakcooper.collection.exa_facts#module>` -- Gathers facts about Oracle Exadata Machine and rack.
+* :ansplugin:`open_excel module <nomakcooper.collection.open_excel#module>` -- Read and update Excel (.xlsx) files using openpyxl
 * :ansplugin:`sar_facts module <nomakcooper.collection.sar_facts#module>` -- Collect system activity report (SAR) data for system performance monitoring.
 
 .. toctree::
@@ -60,4 +61,5 @@ Modules
 
     charts_module
     exa_facts_module
+    open_excel_module
     sar_facts_module

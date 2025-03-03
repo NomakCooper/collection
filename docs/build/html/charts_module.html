@@ -10,7 +10,7 @@
   <title>nomakcooper.collection.charts module – Generate high-quality charts using Plotly and save them as images. &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=41de9001" />
       <link rel="stylesheet" type="text/css" href="_static/css/ansible.css?v=c5b67dd2" />
-      <link rel="stylesheet" type="text/css" href="_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="_static/antsibull-minimal.css?v=4bcdee6c" />
       <link rel="stylesheet" type="text/css" href="_static/css/rtd-ethical-ads.css?v=289b023e" />
 
   
@@ -87,6 +87,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="exa_facts_module.html">nomakcooper.collection.exa_facts module – Gathers facts about Oracle Exadata Machine and rack.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="open_excel_module.html">nomakcooper.collection.open_excel module – Read and update Excel (.xlsx) files using openpyxl</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sar_facts_module.html">nomakcooper.collection.sar_facts module – Collect system activity report (SAR) data for system performance monitoring.</a></li>
 </ul>
 <!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
@@ -120,7 +121,7 @@
 <h1>nomakcooper.collection.charts module – Generate high-quality charts using Plotly and save them as images.<a class="headerlink" href="#nomakcooper-collection-charts-module-generate-high-quality-charts-using-plotly-and-save-them-as-images" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/">nomakcooper.collection collection</a> (version 1.0.10).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/">nomakcooper.collection collection</a> (version 1.2.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">nomakcooper.collection</span></code>.
@@ -141,18 +142,16 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>This module generates various types of charts (line, bar, pie, donut) and saves them as images.</p></li>
-<li><p>It provides customization options for titles, colors, sizes, fonts, and legend placements.</p></li>
-<li><p>Supports modern aesthetics with soft gridlines, contrasting backgrounds, and well-structured layout design.</p></li>
-<li><p>Ensures high readability and presentation-ready output.</p></li>
-<li><p>Uses Plotly for visualization.</p></li>
+<li><p>It provides customization options for titles, axis labels, colors, sizes, fonts, and legends.</p></li>
+<li><p>Uses Plotly and Kaleido for visualization and image generation.</p></li>
 </ul>
 </section>
 <section id="requirements">
 <span id="ansible-collections-nomakcooper-collection-charts-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <p>The below requirements are needed on the host that executes this module.</p>
 <ul class="simple">
-<li><p>Kaleido</p></li>
-<li><p>Plotly</p></li>
+<li><p>plotly</p></li>
+<li><p>kaleido</p></li>
 </ul>
 </section>
 <section id="parameters">
@@ -168,7 +167,7 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <div class="ansibleOptionAnchor" id="parameter-filename"></div><p class="ansible-option-title" id="ansible-collections-nomakcooper-collection-charts-module-parameter-filename"><strong>filename</strong></p>
 <a class="ansibleOptionLink" href="#parameter-filename" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Filename for the saved chart.</p>
+<td><div class="ansible-option-cell"><p>Filename for the saved chart image.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -251,6 +250,7 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <a class="ansibleOptionLink" href="#parameter-slicecolor" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Colors for pie or donut chart slices.</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -258,6 +258,7 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <a class="ansibleOptionLink" href="#parameter-slicedata" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=float</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Data values for pie or donut chart slices.</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -265,6 +266,7 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <a class="ansibleOptionLink" href="#parameter-slicelabel" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Labels for pie or donut chart slices.</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -300,6 +302,7 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <a class="ansibleOptionLink" href="#parameter-xaxis" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>X-axis data values.</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -313,7 +316,8 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <div class="ansibleOptionAnchor" id="parameter-yaxis"></div><p class="ansible-option-title" id="ansible-collections-nomakcooper-collection-charts-module-parameter-yaxis"><strong>yaxis</strong></p>
 <a class="ansibleOptionLink" href="#parameter-yaxis" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=list</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>List of Y-axis data series.</p>
+<td><div class="ansible-option-cell"><p>List of Y-axis data series (each series is a list of numeric values).</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -321,6 +325,7 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <a class="ansibleOptionLink" href="#parameter-yaxiscolor" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Colors for the Y-axis data series.</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -328,6 +333,7 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <a class="ansibleOptionLink" href="#parameter-yaxisname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Labels for the Y-axis data series.</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
 </tbody>
@@ -335,85 +341,35 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set line axis data</span>
-<span class="w">  </span><span class="nt">set_fact</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">xdata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;00:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;02:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;04:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;06:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;08:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;10:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;12:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;14:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;16:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;18:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;20:00&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;22:00&#39;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">y1data</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="nv">30</span><span class="p p-Indicator">,</span><span class="nv">40</span><span class="p p-Indicator">,</span><span class="nv">50</span><span class="p p-Indicator">,</span><span class="nv">80</span><span class="p p-Indicator">,</span><span class="nv">70</span><span class="p p-Indicator">,</span><span class="nv">60</span><span class="p p-Indicator">,</span><span class="nv">40</span><span class="p p-Indicator">,</span><span class="nv">30</span><span class="p p-Indicator">,</span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="nv">10</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">y2data</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">05</span><span class="p p-Indicator">,</span><span class="nv">15</span><span class="p p-Indicator">,</span><span class="nv">25</span><span class="p p-Indicator">,</span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="nv">45</span><span class="p p-Indicator">,</span><span class="nv">50</span><span class="p p-Indicator">,</span><span class="nv">40</span><span class="p p-Indicator">,</span><span class="nv">35</span><span class="p p-Indicator">,</span><span class="nv">30</span><span class="p p-Indicator">,</span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="nv">15</span><span class="p p-Indicator">,</span><span class="nv">05</span><span class="p p-Indicator">]</span>
-
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate line chart</span>
-<span class="w">  </span><span class="nt">charts</span><span class="p">:</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate a line chart for CPU Usage Over Time</span>
+<span class="w">  </span><span class="nt">nomakcooper.collection.charts</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;line&quot;</span>
 <span class="w">    </span><span class="nt">titlechart</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CPU</span><span class="nv"> </span><span class="s">Usage</span><span class="nv"> </span><span class="s">Over</span><span class="nv"> </span><span class="s">Time&quot;</span>
-<span class="w">    </span><span class="nt">xaxis</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">xdata</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="nt">xaxisname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Timestamp&quot;</span>
-<span class="w">    </span><span class="nt">yaxis</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
-<span class="w">      </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">y1data</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">      </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">y2data</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">yaxisname</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;User</span><span class="nv"> </span><span class="s">%&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;System</span><span class="nv"> </span><span class="s">%&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">yaxiscolor</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;red&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">xaxis</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;00:00&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;02:00&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;04:00&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;06:00&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;08:00&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">xaxisname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Time&quot;</span>
+<span class="w">    </span><span class="nt">yaxis</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">40</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">50</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">60</span><span class="p p-Indicator">]]</span>
+<span class="w">    </span><span class="nt">yaxisname</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CPU</span><span class="nv"> </span><span class="s">Usage</span><span class="nv"> </span><span class="s">%&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">yaxiscolor</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;red&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">shape_line</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;spline&quot;</span>
 <span class="w">    </span><span class="nt">imgwidth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1920</span>
 <span class="w">    </span><span class="nt">imgheight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1080</span>
 <span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/charts&quot;</span>
 <span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cpu_usage&quot;</span>
 <span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;png&quot;</span>
-<span class="w">    </span><span class="nt">titlelegend</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CPU</span><span class="nv"> </span><span class="s">Breakdown&quot;</span>
+<span class="w">    </span><span class="nt">titlelegend</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Usage&quot;</span>
 <span class="w">  </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate bar chart</span>
-<span class="w">  </span><span class="nt">charts</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;line&quot;</span>
-<span class="w">    </span><span class="nt">titlechart</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CPU</span><span class="nv"> </span><span class="s">Usage</span><span class="nv"> </span><span class="s">Over</span><span class="nv"> </span><span class="s">Time&quot;</span>
-<span class="w">    </span><span class="nt">xaxis</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">xdata</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="nt">xaxisname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Timestamp&quot;</span>
-<span class="w">    </span><span class="nt">yaxis</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
-<span class="w">      </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">y1data</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">      </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">y2data</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">yaxisname</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;User</span><span class="nv"> </span><span class="s">%&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;System</span><span class="nv"> </span><span class="s">%&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">yaxiscolor</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;red&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">shape_line</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;spline&quot;</span>
-<span class="w">    </span><span class="nt">imgwidth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1920</span>
-<span class="w">    </span><span class="nt">imgheight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1080</span>
-<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/charts&quot;</span>
-<span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cpu_usage&quot;</span>
-<span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;png&quot;</span>
-<span class="w">    </span><span class="nt">titlelegend</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CPU</span><span class="nv"> </span><span class="s">Breakdown&quot;</span>
-<span class="w">  </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
-
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set pie fact</span>
-<span class="w">  </span><span class="nt">set_fact</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">pielabel</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;sys&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;dba&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;webservice&#39;</span><span class="p p-Indicator">,</span><span class="s">&#39;application&#39;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">piedata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">50</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">20</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">piecolor</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;#1500ff&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;#ff000d&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;#eaff00&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;#8700e8&quot;</span><span class="p p-Indicator">]</span>
-
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate pie chart</span>
-<span class="w">  </span><span class="nt">charts</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate a pie chart for Resource Distribution</span>
+<span class="w">  </span><span class="nt">nomakcooper.collection.charts</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pie&quot;</span>
-<span class="w">    </span><span class="nt">titlechart</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Swap</span><span class="nv"> </span><span class="s">Usage</span><span class="nv"> </span><span class="s">Breakdown&quot;</span>
-<span class="w">    </span><span class="nt">slicelabel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">pielabel</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="nt">slicedata</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">piedata</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="nt">slicecolor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">piecolor</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">titlechart</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Resource</span><span class="nv"> </span><span class="s">Distribution&quot;</span>
+<span class="w">    </span><span class="nt">slicedata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">40</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">slicelabel</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;A&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">slicecolor</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;#ff0000&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;#00ff00&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;#0000ff&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;#ffff00&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">imgwidth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">800</span>
 <span class="w">    </span><span class="nt">imgheight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span>
 <span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/charts&quot;</span>
-<span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;app_pie&quot;</span>
-<span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;png&quot;</span>
-<span class="w">  </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
-
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate pie chart</span>
-<span class="w">  </span><span class="nt">charts</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;donut&quot;</span>
-<span class="w">    </span><span class="nt">titlechart</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Swap</span><span class="nv"> </span><span class="s">Usage</span><span class="nv"> </span><span class="s">Breakdown&quot;</span>
-<span class="w">    </span><span class="nt">slicelabel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">pielabel</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="nt">slicedata</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">piedata</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="nt">slicecolor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">piecolor</span> <span class="cp">}}</span><span class="s">&quot;</span>
-<span class="w">    </span><span class="nt">imgwidth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">800</span>
-<span class="w">    </span><span class="nt">imgheight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span>
-<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/charts&quot;</span>
-<span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;app_pie&quot;</span>
+<span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;resource_distribution&quot;</span>
 <span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;png&quot;</span>
 <span class="w">  </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
 </pre></div>
@@ -433,8 +389,8 @@ see <a class="reference internal" href="#ansible-collections-nomakcooper-collect
 <div class="ansibleOptionAnchor" id="return-changed"></div><p class="ansible-option-title" id="ansible-collections-nomakcooper-collection-charts-module-return-changed"><strong>changed</strong></p>
 <a class="ansibleOptionLink" href="#return-changed" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The change status.</p>
-<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> if image files have been generated</p>
+<td><div class="ansible-option-cell"><p>Indicates whether the chart image was successfully generated.</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> always</p>
 <p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">true</span></code></p>
 </div></td>
 </tr>

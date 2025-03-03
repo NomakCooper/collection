@@ -22,7 +22,7 @@ nomakcooper.collection.charts module -- Generate high-quality charts using Plotl
 .. Collection note
 
 .. note::
-    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.0.10).
+    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.2.0).
 
     It is not included in ``ansible-core``.
     To check whether it is installed, run :code:`ansible-galaxy collection list`.
@@ -49,10 +49,8 @@ Synopsis
 .. Description
 
 - This module generates various types of charts (line, bar, pie, donut) and saves them as images.
-- It provides customization options for titles, colors, sizes, fonts, and legend placements.
-- Supports modern aesthetics with soft gridlines, contrasting backgrounds, and well-structured layout design.
-- Ensures high readability and presentation-ready output.
-- Uses Plotly for visualization.
+- It provides customization options for titles, axis labels, colors, sizes, fonts, and legends.
+- Uses Plotly and Kaleido for visualization and image generation.
 
 
 .. Aliases
@@ -66,8 +64,8 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- Kaleido
-- Plotly
+- plotly
+- kaleido
 
 
 
@@ -117,7 +115,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Filename for the saved chart.
+      Filename for the saved chart image.
 
 
       .. raw:: html
@@ -466,6 +464,10 @@ Parameters
       Colors for pie or donut chart slices.
 
 
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
       .. raw:: html
 
         </div>
@@ -500,6 +502,10 @@ Parameters
       Data values for pie or donut chart slices.
 
 
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
       .. raw:: html
 
         </div>
@@ -533,6 +539,10 @@ Parameters
 
       Labels for pie or donut chart slices.
 
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
 
       .. raw:: html
 
@@ -680,6 +690,10 @@ Parameters
       X-axis data values.
 
 
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
       .. raw:: html
 
         </div>
@@ -745,8 +759,12 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      List of Y-axis data series.
+      List of Y-axis data series (each series is a list of numeric values).
 
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
 
       .. raw:: html
 
@@ -782,6 +800,10 @@ Parameters
       Colors for the Y-axis data series.
 
 
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
       .. raw:: html
 
         </div>
@@ -816,6 +838,10 @@ Parameters
       Labels for the Y-axis data series.
 
 
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
       .. raw:: html
 
         </div>
@@ -837,85 +863,35 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    - name: set line axis data
-      set_fact:
-        xdata: ['00:00','02:00','04:00','06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00']
-        y1data: [20,20,30,40,50,80,70,60,40,30,20,10]
-        y2data: [05,15,25,20,45,50,40,35,30,20,15,05]
-
-    - name: Generate line chart
-      charts:
+    - name: Generate a line chart for CPU Usage Over Time
+      nomakcooper.collection.charts:
         type: "line"
         titlechart: "CPU Usage Over Time"
-        xaxis: "{{ xdata }}"
-        xaxisname: "Timestamp"
-        yaxis: [
-          "{{ y1data }}",
-          "{{ y2data }}"
-        ]
-        yaxisname: ["User %", "System %"]
-        yaxiscolor: ["red", "blue"]
+        xaxis: ['00:00', '02:00', '04:00', '06:00', '08:00']
+        xaxisname: "Time"
+        yaxis: [[20, 30, 40, 50, 60]]
+        yaxisname: ["CPU Usage %"]
+        yaxiscolor: ["red"]
         shape_line: "spline"
         imgwidth: 1920
         imgheight: 1080
         path: "/charts"
         filename: "cpu_usage"
         format: "png"
-        titlelegend: "CPU Breakdown"
+        titlelegend: "Usage"
       delegate_to: localhost
 
-    - name: Generate bar chart
-      charts:
-        type: "line"
-        titlechart: "CPU Usage Over Time"
-        xaxis: "{{ xdata }}"
-        xaxisname: "Timestamp"
-        yaxis: [
-          "{{ y1data }}",
-          "{{ y2data }}"
-        ]
-        yaxisname: ["User %", "System %"]
-        yaxiscolor: ["red", "blue"]
-        shape_line: "spline"
-        imgwidth: 1920
-        imgheight: 1080
-        path: "/charts"
-        filename: "cpu_usage"
-        format: "png"
-        titlelegend: "CPU Breakdown"
-      delegate_to: localhost
-
-    - name: set pie fact
-      set_fact:
-        pielabel: ['sys','dba','webservice','application']
-        piedata: [10, 50, 20, 20]
-        piecolor: ["#1500ff", "#ff000d", "#eaff00", "#8700e8"]
-
-    - name: Generate pie chart
-      charts:
+    - name: Generate a pie chart for Resource Distribution
+      nomakcooper.collection.charts:
         type: "pie"
-        titlechart: "Swap Usage Breakdown"
-        slicelabel: "{{ pielabel }}"
-        slicedata: "{{ piedata }}"
-        slicecolor: "{{ piecolor }}"
+        titlechart: "Resource Distribution"
+        slicedata: [10, 20, 30, 40]
+        slicelabel: ["A", "B", "C", "D"]
+        slicecolor: ["#ff0000", "#00ff00", "#0000ff", "#ffff00"]
         imgwidth: 800
         imgheight: 600
         path: "/charts"
-        filename: "app_pie"
-        format: "png"
-      delegate_to: localhost
-
-    - name: Generate pie chart
-      charts:
-        type: "donut"
-        titlechart: "Swap Usage Breakdown"
-        slicelabel: "{{ pielabel }}"
-        slicedata: "{{ piedata }}"
-        slicecolor: "{{ piecolor }}"
-        imgwidth: 800
-        imgheight: 600
-        path: "/charts"
-        filename: "app_pie"
+        filename: "resource_distribution"
         format: "png"
       delegate_to: localhost
 
@@ -968,12 +944,12 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <div class="ansible-option-cell">
 
-      The change status.
+      Indicates whether the chart image was successfully generated.
 
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-returned-bold:`Returned:` if image files have been generated
+      :ansible-option-returned-bold:`Returned:` always
 
       .. rst-class:: ansible-option-line
       .. rst-class:: ansible-option-sample

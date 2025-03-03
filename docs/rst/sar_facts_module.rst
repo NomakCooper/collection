@@ -22,7 +22,7 @@ nomakcooper.collection.sar_facts module -- Collect system activity report (SAR) 
 .. Collection note
 
 .. note::
-    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.0.10).
+    This module is part of the `nomakcooper.collection collection <https://galaxy.ansible.com/ui/repo/published/nomakcooper/collection/>`_ (version 1.2.0).
 
     It is not included in ``ansible-core``.
     To check whether it is installed, run :code:`ansible-galaxy collection list`.
@@ -354,6 +354,40 @@ Parameters
 
 
 .. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    # Gather CPU performance metrics for a specific date and time range.
+    - name: Gather CPU SAR facts between 08:00 and 10:00
+      nomakcooper.collection.sar_facts:
+        date_start: "2025-05-01"
+        date_end: "2025-05-01"
+        time_start: "08:00:00"
+        time_end: "10:00:00"
+        type: cpu
+
+    # Gather memory usage SAR data for a single day.
+    - name: Retrieve memory usage data for a day
+      nomakcooper.collection.sar_facts:
+        date_start: "2025-05-01"
+        type: memory
+
+    # Retrieve disk statistics with partition details.
+    - name: Gather disk usage statistics with partition information
+      nomakcooper.collection.sar_facts:
+        date_start: "2025-05-01"
+        type: disk
+        partition: true
+
+    # Retrieve average load statistics.
+    - name: Gather average load statistics
+      nomakcooper.collection.sar_facts:
+        date_start: "2025-05-01"
+        type: load
+        average: true
 
 
 
