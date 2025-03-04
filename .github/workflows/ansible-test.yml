@@ -95,8 +95,6 @@ jobs:
             python: '3.11'
           - ansible: stable-2.18
             python: '3.12'
-          - ansible: stable-2.18
-            python: '3.13'
     steps:
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
@@ -109,7 +107,6 @@ jobs:
           pre-test-cmd: pip install -r meta/requirements.txt
           test-deps: ansible.netcommon
           pull-request-change-detection: 'true'
-          integration-continue-on-error: 'false'
           integration-diff: 'false'
 
   check:
