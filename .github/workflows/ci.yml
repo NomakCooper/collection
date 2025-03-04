@@ -33,7 +33,10 @@ jobs:
           - devel
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
@@ -41,7 +44,6 @@ jobs:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
           collection-root: nomakcooper/collection
-          git-checkout-ref: main
           sanity-skip-tests: "import, runtime-metadata"
           pre-test-cmd: pip install -r meta/requirements.txt
           pull-request-change-detection: true
@@ -102,7 +104,10 @@ jobs:
             python: '3.13'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1
@@ -111,7 +116,6 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: integration
           collection-root: nomakcooper/collection
-          git-checkout-ref: main
           pre-test-cmd: pip install -r meta/requirements.txt
           test-deps: ansible.netcommon
           pull-request-change-detection: true
