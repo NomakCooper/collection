@@ -17,7 +17,7 @@ author:
 requirements:
   - openpyxl
 description:
-  - This module reads from or writes to Excel O(.xlsx) files using the openpyxl Python library.
+  - This module reads from or writes to Excel (.xlsx) files using the openpyxl Python library.
   - It supports reading the entire workbook or a single worksheet, optionally limited to a given cell range.
   - For updates, you can overwrite cells, append new rows, or insert rows. You can also apply custom cell styles.
   - The original Excel file is not overwritten unless you set O(dest) to the same path as O(src).
