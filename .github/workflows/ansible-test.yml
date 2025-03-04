@@ -40,7 +40,7 @@ jobs:
           ansible-core-version: stable-${{ matrix.ansible }}
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           coverage: ${{ github.event_name == 'schedule' && 'always' || 'never' }}
-          sanity-skip-tests: "import, runtime-metadata"
+          sanity-skip-tests: "runtime-metadata"
           testing-type: sanity
           collection-root: nomakcooper/collection
           pre-test-cmd: pip install -r meta/requirements.txt
