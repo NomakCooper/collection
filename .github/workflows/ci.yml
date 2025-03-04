@@ -34,6 +34,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
@@ -102,6 +104,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1
