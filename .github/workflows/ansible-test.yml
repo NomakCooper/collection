@@ -1,4 +1,4 @@
-name: CI
+name: Ansible Test
 
 on:
   workflow_dispatch:
@@ -29,18 +29,18 @@ jobs:
     strategy:
       matrix:
         ansible:
-          - stable-2.18
-          - devel
+          - '2.15'
     steps:
       - name: Perform sanity testing
-        uses: ansible-community/ansible-test-gh-action@release/v1
+        uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
-          ansible-core-version: ${{ matrix.ansible }}
+          ansible-core-version: stable-${{ matrix.ansible }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
+          coverage: ${{ github.event_name == 'schedule' && 'always' || 'never' }}
           testing-type: sanity
           collection-root: nomakcooper/collection
-          sanity-skip-tests: "import, runtime-metadata"
           pre-test-cmd: pip install -r meta/requirements.txt
-          pull-request-change-detection: false
+          pull-request-change-detection: 'true'
 
   integration:
     name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
@@ -98,15 +98,18 @@ jobs:
             python: '3.13'
     steps:
       - name: Perform integration testing
-        uses: ansible-community/ansible-test-gh-action@release/v1
+        uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
           target-python-version: ${{ matrix.python }}
           testing-type: integration
           collection-root: nomakcooper/collection
           pre-test-cmd: pip install -r meta/requirements.txt
           test-deps: ansible.netcommon
-          pull-request-change-detection: false
+          pull-request-change-detection: 'true'
+          integration-continue-on-error: 'false'
+          integration-diff: 'false'
 
   check:
     name: Check
