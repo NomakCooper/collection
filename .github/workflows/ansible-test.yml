@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         ansible:
-          - '2.15'
+          - '2.18'
     steps:
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
