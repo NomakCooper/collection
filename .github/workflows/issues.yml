@@ -31,34 +31,3 @@ jobs:
               issue_number: issue.number,
               labels: baseLabels,
             });
-            
-            // Extract component name only from the dedicated section.
-            // This regex looks for the header "##### COMPONENT NAME", optionally a comment line,
-            // and then a line containing a file name ending in .py.
-            const componentRegex = /#####\s*COMPONENT NAME\s*\n(?:\s*<!---.*\n)?\s*([a-zA-Z0-9_\-]+\.py)/i;
-            let componentName = "";
-            const match = issueBody.match(componentRegex);
-            if (match && match[1]) {
-              componentName = match[1].trim();
-            }
-            // Fallback if no component found.
-            if (!componentName) {
-              componentName = "unknown.py";
-            }
-            
-            // Construct the display path and full URL.
-            // Display path: plugins/modules/charts.py
-            const displayPath = `plugins/modules/${componentName}`;
-            // Full URL (adjust branch and repository structure if needed).
-            const fileUrl = `https://github.com/NomakCooper/collection/blob/main/nomakcooper/collection/${displayPath}`;
-            
-            // Build the comment in the desired format.
-            const commentBody = `Files identified in the description:\n\n- [\`${displayPath}\`](${fileUrl})`;
-            
-            // Post the comment on the issue.
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
-              body: commentBody,
-            });
