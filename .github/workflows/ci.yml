@@ -15,7 +15,6 @@ on:
       - 'nomakcooper/collection/changelogs/**'
       - 'nomakcooper/collection/changelogs/CHANGELOG.rst'
       - 'docs/**'
-  pull_request:
   schedule:
     - cron: '0 6 * * *'
 
