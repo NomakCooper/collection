@@ -33,19 +33,6 @@ jobs:
           - stable-2.18
           - devel
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref }}
-          fetch-depth: 0
-
-      - name: Create local branch for PR
-        if: ${{ github.event_name == 'pull_request' }}
-        run: git checkout -b "${{ github.head_ref }}"
-
-      - name: Copy .git folder to collection directory
-        run: cp -R .git nomakcooper/collection/
-
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
@@ -54,7 +41,7 @@ jobs:
           collection-root: nomakcooper/collection
           sanity-skip-tests: "import, runtime-metadata"
           pre-test-cmd: pip install -r meta/requirements.txt
-          pull-request-change-detection: true
+          pull-request-change-detection: false
 
   integration:
     name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
@@ -111,19 +98,6 @@ jobs:
           - ansible: stable-2.18
             python: '3.13'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref }}
-          fetch-depth: 0
-
-      - name: Create local branch for PR
-        if: ${{ github.event_name == 'pull_request' }}
-        run: git checkout -b "${{ github.head_ref }}"
-
-      - name: Copy .git folder to collection directory
-        run: cp -R .git nomakcooper/collection/
-
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
@@ -133,7 +107,7 @@ jobs:
           collection-root: nomakcooper/collection
           pre-test-cmd: pip install -r meta/requirements.txt
           test-deps: ansible.netcommon
-          pull-request-change-detection: true
+          pull-request-change-detection: false
 
   check:
     name: Check
