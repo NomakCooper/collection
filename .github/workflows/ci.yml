@@ -33,8 +33,21 @@ jobs:
           - stable-2.18
           - devel
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Create local branch for PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: git checkout -b "${{ github.head_ref }}"
+
+      - name: Copy .git folder to collection directory
+        run: cp -R .git nomakcooper/collection/
+
       - name: Perform sanity testing
-        uses: felixfontein/ansible-test-gh-action@main
+        uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
@@ -98,8 +111,21 @@ jobs:
           - ansible: stable-2.18
             python: '3.13'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Create local branch for PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: git checkout -b "${{ github.head_ref }}"
+
+      - name: Copy .git folder to collection directory
+        run: cp -R .git nomakcooper/collection/
+
       - name: Perform integration testing
-        uses: felixfontein/ansible-test-gh-action@main
+        uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
