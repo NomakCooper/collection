@@ -34,6 +34,10 @@ jobs:
         ansible:
           - '2.18'
     steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
@@ -42,6 +46,7 @@ jobs:
           coverage: ${{ github.event_name == 'schedule' && 'always' || 'never' }}
           testing-type: sanity
           collection-root: nomakcooper/collection
+          collection-src-directory: ${{ github.workspace }}
           pre-test-cmd: pip install -r meta/requirements.txt
           pull-request-change-detection: 'true'
 
@@ -85,6 +90,10 @@ jobs:
           - ansible: stable-2.18
             python: '3.12'
     steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
@@ -93,6 +102,7 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: integration
           collection-root: nomakcooper/collection
+          collection-src-directory: ${{ github.workspace }}
           pre-test-cmd: pip install -r meta/requirements.txt
           test-deps: ansible.netcommon
           pull-request-change-detection: 'true'
