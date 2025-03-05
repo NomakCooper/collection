@@ -56,7 +56,7 @@ jobs:
           pull-request-change-detection: 'true'
 
       - name: Upload sanity test summary
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ always() && github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-summary-${{ github.job }}-${{ matrix.ansible }}
@@ -126,7 +126,7 @@ jobs:
           integration-diff: 'false'
 
       - name: Upload integration test summary
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ always() && github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-summary-${{ github.job }}-${{ matrix.ansible }}-py${{ matrix.python }}
