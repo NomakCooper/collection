@@ -39,6 +39,8 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref || github.ref }}
+      - name: Fetch base branch (main)
+        run: git fetch origin main:main
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
@@ -96,6 +98,8 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref || github.ref }}
+      - name: Fetch base branch (main)
+        run: git fetch origin main:main
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
