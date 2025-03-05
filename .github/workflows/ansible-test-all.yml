@@ -1,4 +1,4 @@
-name: Ansible Test
+name: Ansible Test All
 
 on:
   workflow_dispatch:
