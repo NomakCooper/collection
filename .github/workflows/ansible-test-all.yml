@@ -2,9 +2,19 @@ name: Ansible Test
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
       - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - '.github/workflows/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/PULL_REQUEST_TEMPLATE.md'
+      - 'nomakcooper/collection/README.md'
+      - 'nomakcooper/collection/changelogs/**'
+      - 'nomakcooper/collection/changelogs/CHANGELOG.rst'
+      - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -19,15 +29,6 @@ jobs:
         ansible:
           - '2.18'
     steps:
-      - name: Checkout repository with full history
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref || github.ref }}
-
-      - name: Fetch base branch (main)
-        run: git fetch origin main:main
-
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
@@ -36,9 +37,7 @@ jobs:
           coverage: ${{ github.event_name == 'schedule' && 'always' || 'never' }}
           testing-type: sanity
           collection-root: nomakcooper/collection
-          collection-src-directory: ${{ github.workspace }}
           pre-test-cmd: pip install -r meta/requirements.txt
-          pull-request-change-detection: 'true'
 
   integration:
     name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
@@ -80,15 +79,6 @@ jobs:
           - ansible: stable-2.18
             python: '3.12'
     steps:
-      - name: Checkout repository with full history
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref || github.ref }}
-
-      - name: Fetch base branch (main)
-        run: git fetch origin main:main
-
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
@@ -97,11 +87,8 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: integration
           collection-root: nomakcooper/collection
-          collection-src-directory: ${{ github.workspace }}
           pre-test-cmd: pip install -r meta/requirements.txt
           test-deps: ansible.netcommon
-          pull-request-change-detection: 'true'
-          integration-diff: 'false'
 
   check:
     name: Check
@@ -113,30 +100,5 @@ jobs:
     steps:
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@release/v1
-        continue-on-error: true
         with:
           jobs: ${{ toJSON(needs) }}
-
-      - name: Generate job summary message
-        id: generate_summary
-        run: |
-          # Start with a header
-          echo "## :rocket: Ansible Test Summary" > summary.txt
-          echo "" >> summary.txt
-          echo "" >> summary.txt
-          echo "|TEST TYPE|RESULT|" >> summary.txt
-          echo "|----------|---------|" >> summary.txt
-          echo "| \`ansible-test sanity\` | ${{ needs.sanity.result }} |" >> summary.txt
-          echo "| \`ansible-test integration\` | ${{ needs.integration.result }} |" >> summary.txt
-          echo "job_summary<<EOF" >> $GITHUB_OUTPUT
-          cat summary.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Create or update PR comment with job summary
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ${{ steps.generate_summary.outputs.job_summary }}
