@@ -38,6 +38,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
@@ -94,6 +95,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
       - name: Perform integration testing
         uses: ansible-community/ansible-test-gh-action@release/v1.16
         with:
