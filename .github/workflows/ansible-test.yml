@@ -136,16 +136,13 @@ jobs:
         id: generate_summary
         run: |
           # Start with a header
-          echo "## Job Summary" > summary.txt
+          echo "## :rocket: Ansible Test Summary" > summary.txt
           echo "" >> summary.txt
-          echo "| Job         | Result  |" >> summary.txt
-          echo "|-------------|---------|" >> summary.txt
-          # Use jq to generate a table row for each job
-          echo '${{ toJSON(needs) }}' | jq -r 'to_entries[] | "| \(.key) | \(.value.result) |"' >> summary.txt
           echo "" >> summary.txt
-          echo "Summary generated:" 
-          cat summary.txt
-          # Export summary as output
+          echo "|TEST TYPE|RESULT|" >> summary.txt
+          echo "|----------|---------|" >> summary.txt
+          echo "| \`ansible-test sanity\` | ${{ needs.sanity.result }} |" >> summary.txt
+          echo "| \`ansible-test integration\` | ${{ needs.integration.result }} |" >> summary.txt
           echo "job_summary<<EOF" >> $GITHUB_OUTPUT
           cat summary.txt >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
