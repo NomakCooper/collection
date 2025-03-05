@@ -44,7 +44,7 @@ jobs:
         run: git fetch origin main:main
 
       - name: Perform sanity testing
-        uses: ansible-community/ansible-test-gh-action@release/v1.16
+        uses: felixfontein/ansible-test-gh-action@main
         with:
           ansible-core-version: stable-${{ matrix.ansible }}
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
@@ -105,7 +105,7 @@ jobs:
         run: git fetch origin main:main
 
       - name: Perform integration testing
-        uses: ansible-community/ansible-test-gh-action@release/v1.16
+        uses: felixfontein/ansible-test-gh-action@main
         with:
           ansible-core-version: ${{ matrix.ansible }}
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
