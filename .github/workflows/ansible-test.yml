@@ -55,12 +55,22 @@ jobs:
           pre-test-cmd: pip install -r meta/requirements.txt
           pull-request-change-detection: 'true'
 
+      - name: Save sanity test summary to file
+        if: ${{ always() && github.event_name == 'pull_request' }}
+        run: |
+          # Ensure that if GITHUB_STEP_SUMMARY is not set, we still create a file.
+          if [ -f "$GITHUB_STEP_SUMMARY" ]; then
+            cp "$GITHUB_STEP_SUMMARY" summary.txt
+          else
+            echo "No summary generated" > summary.txt
+          fi
+
       - name: Upload sanity test summary
         if: ${{ always() && github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-summary-${{ github.job }}-${{ matrix.ansible }}
-          path: $GITHUB_STEP_SUMMARY
+          path: summary.txt
 
   integration:
     name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
@@ -125,12 +135,21 @@ jobs:
           pull-request-change-detection: 'true'
           integration-diff: 'false'
 
+      - name: Save integration test summary to file
+        if: ${{ always() && github.event_name == 'pull_request' }}
+        run: |
+          if [ -f "$GITHUB_STEP_SUMMARY" ]; then
+            cp "$GITHUB_STEP_SUMMARY" summary.txt
+          else
+            echo "No summary generated" > summary.txt
+          fi
+
       - name: Upload integration test summary
         if: ${{ always() && github.event_name == 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-summary-${{ github.job }}-${{ matrix.ansible }}-py${{ matrix.python }}
-          path: $GITHUB_STEP_SUMMARY
+          path: summary.txt
 
   check:
     name: Check
@@ -155,8 +174,8 @@ jobs:
       - name: Aggregate test summaries
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          # Combine all test summary files (assuming they are plain text)
-          find test-summaries -type f -exec cat {} + > combined-summary.txt
+          # Combine all uploaded summary.txt files
+          find test-summaries -type f -name "summary.txt" -exec cat {} + > combined-summary.txt
           echo "Combined test summary:"
           cat combined-summary.txt
 
