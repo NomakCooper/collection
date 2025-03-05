@@ -57,7 +57,7 @@ jobs:
 
       - name: Upload sanity test summary
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4
         with:
           name: test-summary-${{ github.job }}-${{ matrix.ansible }}
           path: $GITHUB_STEP_SUMMARY
@@ -127,7 +127,7 @@ jobs:
 
       - name: Upload integration test summary
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4
         with:
           name: test-summary-${{ github.job }}-${{ matrix.ansible }}-py${{ matrix.python }}
           path: $GITHUB_STEP_SUMMARY
@@ -148,7 +148,7 @@ jobs:
 
       - name: Download test summaries
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@v3.1.0
+        uses: actions/download-artifact@v4
         with:
           path: test-summaries
 
