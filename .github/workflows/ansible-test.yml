@@ -55,23 +55,6 @@ jobs:
           pre-test-cmd: pip install -r meta/requirements.txt
           pull-request-change-detection: 'true'
 
-      - name: Save sanity test summary to file
-        if: ${{ always() && github.event_name == 'pull_request' }}
-        run: |
-          # Ensure that if GITHUB_STEP_SUMMARY is not set, we still create a file.
-          if [ -f "$GITHUB_STEP_SUMMARY" ]; then
-            cp "$GITHUB_STEP_SUMMARY" summary.txt
-          else
-            echo "No summary generated" > summary.txt
-          fi
-
-      - name: Upload sanity test summary
-        if: ${{ always() && github.event_name == 'pull_request' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-summary-${{ github.job }}-${{ matrix.ansible }}
-          path: summary.txt
-
   integration:
     name: Integration (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     runs-on: ubuntu-latest
@@ -135,22 +118,6 @@ jobs:
           pull-request-change-detection: 'true'
           integration-diff: 'false'
 
-      - name: Save integration test summary to file
-        if: ${{ always() && github.event_name == 'pull_request' }}
-        run: |
-          if [ -f "$GITHUB_STEP_SUMMARY" ]; then
-            cp "$GITHUB_STEP_SUMMARY" summary.txt
-          else
-            echo "No summary generated" > summary.txt
-          fi
-
-      - name: Upload integration test summary
-        if: ${{ always() && github.event_name == 'pull_request' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-summary-${{ github.job }}-${{ matrix.ansible }}-py${{ matrix.python }}
-          path: summary.txt
-
   check:
     name: Check
     if: always()
@@ -161,53 +128,5 @@ jobs:
     steps:
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@release/v1
-        continue-on-error: true
         with:
           jobs: ${{ toJSON(needs) }}
-
-      - name: Download test summaries
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@v4
-        with:
-          path: test-summaries
-
-      - name: Aggregate test summaries
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          # Combine all uploaded summary.txt files
-          find test-summaries -type f -name "summary.txt" -exec cat {} + > combined-summary.txt
-          echo "Combined test summary:"
-          cat combined-summary.txt
-
-      - name: Check for errors in aggregated test summary
-        id: check_errors
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          # Extract the first occurrence of a number preceding the word "failed"
-          fail_count=$(grep -oP '\d+(?=\s+failed)' combined-summary.txt | head -n1)
-          echo "fail_count is: $fail_count"
-          if [ -z "$fail_count" ]; then
-            echo "errors_found=false" >> $GITHUB_OUTPUT
-          elif [ "$fail_count" -gt 0 ]; then
-            echo "errors_found=true" >> $GITHUB_OUTPUT
-          else
-            echo "errors_found=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Get aggregated test summary
-        id: get_test_summary
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo "test_summary<<EOF" >> $GITHUB_OUTPUT
-          cat combined-summary.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Create or update PR comment with aggregated test summary
-        if: ${{ github.event_name == 'pull_request' && steps.check_errors.outputs.errors_found == 'true' }}
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ## Combined Test Summary
-            ${{ steps.get_test_summary.outputs.test_summary }}
